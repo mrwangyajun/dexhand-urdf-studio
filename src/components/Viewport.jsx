@@ -4,10 +4,83 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { STLLoader } from 'three/examples/jsm/loaders/STLLoader.js'
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js'
 import { ColladaLoader } from 'three/examples/jsm/loaders/ColladaLoader.js'
+import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js'
 import { base64ToArrayBuffer } from '../core/project.js'
 import { resolveRootId } from '../core/tree.js'
 
 const UNIT_SCALE = { m: 1, mm: 0.001, cm: 0.01, in: 0.0254 }
+
+/** 生成一张径向淡出的技术网格贴图（比 GridHelper 边缘生硬收尾更好看） */
+function makeGridTexture() {
+  const size = 2048
+  const canvas = document.createElement('canvas')
+  canvas.width = size
+  canvas.height = size
+  const ctx = canvas.getContext('2d')
+  if (!ctx) return null
+  const cells = 56
+  const step = size / cells
+
+  ctx.clearRect(0, 0, size, size)
+  ctx.strokeStyle = 'rgba(158, 190, 222, 0.075)'
+  ctx.lineWidth = 2
+  ctx.beginPath()
+  for (let i = 1; i < cells; i++) {
+    if (i % 8 === 0) continue
+    const p = Math.round(i * step) + 1
+    ctx.moveTo(p, 0)
+    ctx.lineTo(p, size)
+    ctx.moveTo(0, p)
+    ctx.lineTo(size, p)
+  }
+  ctx.stroke()
+
+  ctx.strokeStyle = 'rgba(165, 202, 240, 0.15)'
+  ctx.lineWidth = 3
+  ctx.beginPath()
+  for (let i = 0; i <= cells; i += 8) {
+    const p = Math.min(Math.round(i * step) + 1, size - 1)
+    ctx.moveTo(p, 0)
+    ctx.lineTo(p, size)
+    ctx.moveTo(0, p)
+    ctx.lineTo(size, p)
+  }
+  ctx.stroke()
+
+  // 径向淡出：中心实、边缘完全消失
+  ctx.globalCompositeOperation = 'destination-in'
+  const g = ctx.createRadialGradient(size / 2, size / 2, size * 0.03, size / 2, size / 2, size * 0.52)
+  g.addColorStop(0, 'rgba(0,0,0,1)')
+  g.addColorStop(0.5, 'rgba(0,0,0,0.62)')
+  g.addColorStop(1, 'rgba(0,0,0,0)')
+  ctx.fillStyle = g
+  ctx.fillRect(0, 0, size, size)
+
+  const tex = new THREE.CanvasTexture(canvas)
+  tex.colorSpace = THREE.SRGBColorSpace
+  tex.anisotropy = 8
+  return tex
+}
+
+/** 径向淡出的 alpha 贴图：让地台边缘融进背景，不出现硬边 */
+function makeRadialAlphaTexture() {
+  const size = 512
+  const canvas = document.createElement('canvas')
+  canvas.width = size
+  canvas.height = size
+  const ctx = canvas.getContext('2d')
+  if (!ctx) return null
+  ctx.fillStyle = '#000'
+  ctx.fillRect(0, 0, size, size)
+  const g = ctx.createRadialGradient(size / 2, size / 2, size * 0.015, size / 2, size / 2, size * 0.5)
+  g.addColorStop(0, '#ffffff')
+  g.addColorStop(0.4, '#e0e0e0')
+  g.addColorStop(0.68, '#5a5a5a')
+  g.addColorStop(1, '#000000')
+  ctx.fillStyle = g
+  ctx.fillRect(0, 0, size, size)
+  return new THREE.CanvasTexture(canvas)
+}
 
 function rpyEuler(rpy) {
   // URDF: R = Rz(yaw) * Ry(pitch) * Rx(roll)  <=>  内旋 ZYX
@@ -71,14 +144,23 @@ export default function Viewport({ project, selection, onSelect, jointValues, op
   // ---------- 初始化 ----------
   useEffect(() => {
     const host = hostRef.current
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false })
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2))
-    renderer.shadowMap.enabled = false
+    renderer.setClearColor(0x000000, 0)
+    renderer.shadowMap.enabled = true
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap
+    renderer.toneMapping = THREE.NeutralToneMapping
+    renderer.toneMappingExposure = 0.95
     host.appendChild(renderer.domElement)
 
     const scene = new THREE.Scene()
-    scene.background = new THREE.Color('#0e1217')
-    scene.fog = new THREE.Fog('#0e1217', 1.6, 6)
+
+    // 环境反射：让金属/塑料表面有细腻的高光渐变
+    const pmrem = new THREE.PMREMGenerator(renderer)
+    pmrem.compileEquirectangularShader()
+    const envRT = pmrem.fromScene(new RoomEnvironment(), 0.035)
+    scene.environment = envRT.texture
+    scene.environmentIntensity = 0.16
 
     const camera = new THREE.PerspectiveCamera(45, 1, 0.0005, 100)
     camera.up.set(0, 0, 1)
@@ -86,30 +168,79 @@ export default function Viewport({ project, selection, onSelect, jointValues, op
 
     const controls = new OrbitControls(camera, renderer.domElement)
     controls.enableDamping = true
-    controls.dampingFactor = 0.08
+    controls.dampingFactor = 0.085
     controls.target.set(0.05, 0, 0)
     controls.maxDistance = 8
     controls.minDistance = 0.01
 
-    scene.add(new THREE.HemisphereLight(0xdfe9f5, 0x1a2330, 1.35))
-    const key = new THREE.DirectionalLight(0xffffff, 1.6)
-    key.position.set(0.6, -0.8, 1.2)
+    scene.add(new THREE.HemisphereLight(0xe6edf5, 0x0b0f14, 0.3))
+
+    const key = new THREE.DirectionalLight(0xfff8f0, 1.5)
+    key.position.set(-0.5, 0.62, 0.95)
+    key.castShadow = true
+    key.shadow.mapSize.set(2048, 2048)
+    key.shadow.bias = -0.0006
+    key.shadow.normalBias = 0.0015
+    key.shadow.radius = 3
     scene.add(key)
-    const fill = new THREE.DirectionalLight(0x8fb6ff, 0.55)
-    fill.position.set(-0.9, 0.6, 0.4)
+    scene.add(key.target)
+
+    const fill = new THREE.DirectionalLight(0xe8eff7, 0.22)
+    fill.position.set(0.75, -0.85, 0.42)
     scene.add(fill)
-    const rim = new THREE.DirectionalLight(0xffd9a0, 0.3)
-    rim.position.set(0.2, 1.1, -0.6)
+
+    const rim = new THREE.DirectionalLight(0xffe8cc, 0.18)
+    rim.position.set(0.5, 1.0, -0.35)
     scene.add(rim)
 
-    const grid = new THREE.GridHelper(1.2, 60, 0x2f4356, 0x1c2733)
-    grid.rotation.x = Math.PI / 2
+    // 地面：受光的地台（径向淡出 + 接影） + 技术网格
+    const gridTex = makeGridTexture()
+    const grid = new THREE.Mesh(
+      new THREE.PlaneGeometry(1.42, 1.42),
+      new THREE.MeshBasicMaterial({
+        map: gridTex,
+        transparent: true,
+        depthWrite: false,
+        opacity: 0.9,
+        toneMapped: false
+      })
+    )
     grid.position.z = -0.06
+    grid.renderOrder = 1
+
+    const floorAlpha = makeRadialAlphaTexture()
+    const floor = new THREE.Mesh(
+      new THREE.PlaneGeometry(6, 6),
+      new THREE.MeshStandardMaterial({
+        color: 0x313b47,
+        roughness: 0.95,
+        metalness: 0,
+        transparent: true,
+        alphaMap: floorAlpha,
+        depthWrite: false,
+        envMapIntensity: 0.2
+      })
+    )
+    floor.position.z = -0.0604
+    floor.receiveShadow = true
+    floor.renderOrder = 0
+
+    const shadowOverlay = new THREE.Mesh(
+      new THREE.PlaneGeometry(6, 6),
+      new THREE.ShadowMaterial({ color: 0x000000, opacity: 0.34, depthWrite: false })
+    )
+    shadowOverlay.position.z = floor.position.z + 0.0002
+    shadowOverlay.receiveShadow = true
+    shadowOverlay.renderOrder = 0.5
+
+    scene.add(floor)
+    scene.add(shadowOverlay)
     scene.add(grid)
 
     const originAxes = new THREE.AxesHelper(0.05)
     originAxes.material.transparent = true
-    originAxes.material.opacity = 0.7
+    originAxes.material.opacity = 0.55
+    originAxes.material.depthWrite = false
     scene.add(originAxes)
 
     const raycaster = new THREE.Raycaster()
@@ -128,7 +259,8 @@ export default function Viewport({ project, selection, onSelect, jointValues, op
     }
 
     S.current = {
-      renderer, scene, camera, controls, raycaster, linkObjs, jointArrows,
+      renderer, scene, camera, controls, raycaster, linkObjs, jointArrows, keyLight: key,
+      grid, floor, shadowOverlay,
       needsSync: true, needsHighlight: true, selBox: null, host, disposed: false
     }
 
@@ -197,6 +329,16 @@ export default function Viewport({ project, selection, onSelect, jointValues, op
       renderer.domElement.removeEventListener('pointerup', onUp)
       for (const rec of linkObjs.values()) disposeRec(rec)
       for (const a of jointArrows.values()) { scene.remove(a); a.dispose?.() }
+      envRT.dispose()
+      pmrem.dispose()
+      gridTex?.dispose()
+      grid.geometry.dispose()
+      grid.material.dispose()
+      floor.geometry.dispose()
+      floor.material.dispose()
+      shadowOverlay.geometry.dispose()
+      shadowOverlay.material.dispose()
+      floorAlpha?.dispose()
       controls.dispose()
       renderer.dispose()
       if (renderer.domElement.parentNode === host) host.removeChild(renderer.domElement)
@@ -269,12 +411,18 @@ export default function Viewport({ project, selection, onSelect, jointValues, op
     }
     for (const j of project.joints) {
       if (!st.jointArrows.has(j.id)) {
-        const arrow = new THREE.ArrowHelper(new THREE.Vector3(0, 0, 1), new THREE.Vector3(), 0.05, 0x53e0c0, 0.014, 0.008)
+        const arrow = new THREE.ArrowHelper(new THREE.Vector3(0, 0, 1), new THREE.Vector3(), 0.042, 0x53e0c0, 0.011, 0.006)
         arrow.line.material.linewidth = 2
         st.jointArrows.set(j.id, arrow)
         scene.add(arrow)
       }
     }
+    // 没有任何网格时收起地台，空画布只留原点坐标轴，更干净
+    const anyMesh = project.links.some((l) => l?.mesh?.dataBase64)
+    if (st.grid) st.grid.visible = anyMesh
+    if (st.floor) st.floor.visible = anyMesh
+    if (st.shadowOverlay) st.shadowOverlay.visible = anyMesh
+
     st.selBoxDirty = true
   }
 
@@ -284,9 +432,10 @@ export default function Viewport({ project, selection, onSelect, jointValues, op
     const meshWrap = new THREE.Group()
     group.add(meshWrap)
     const material = new THREE.MeshStandardMaterial({
-      color: new THREE.Color(link.color || '#8ea2b8'),
-      metalness: 0.28,
+      color: new THREE.Color(link.color || '#93a6ba'),
+      metalness: 0.06,
       roughness: 0.52,
+      envMapIntensity: 0.22,
       side: THREE.DoubleSide
     })
     const axes = new THREE.AxesHelper(0.03)
@@ -295,7 +444,7 @@ export default function Viewport({ project, selection, onSelect, jointValues, op
     axes.visible = false
     group.add(axes)
     const com = new THREE.Mesh(
-      new THREE.SphereGeometry(0.0032, 18, 12),
+      new THREE.SphereGeometry(0.0026, 20, 14),
       new THREE.MeshBasicMaterial({ color: 0xff56d0, depthTest: false, transparent: true, opacity: 0.95 })
     )
     com.renderOrder = 5
@@ -322,6 +471,8 @@ export default function Viewport({ project, selection, onSelect, jointValues, op
           if (o.isMesh) {
             o.material = rec.material
             o.frustumCulled = false
+            o.castShadow = true
+            o.receiveShadow = true
             if (o.geometry && !o.geometry.attributes.normal) o.geometry.computeVertexNormals()
           }
         })
@@ -331,7 +482,7 @@ export default function Viewport({ project, selection, onSelect, jointValues, op
         const unit = UNIT_SCALE[link.mesh?.unitScale] ?? 1
         rec.size = Math.max(size.length() * unit, 0.02)
         rec.axes.scale.setScalar(rec.size * 0.5)
-        rec.com.scale.setScalar(Math.max(rec.size * 12, 1))
+        rec.com.scale.setScalar(Math.max(rec.size * 7, 1))
         st.selBoxDirty = true
         st.needsHighlight = true
         st.needsFit = true
@@ -364,8 +515,9 @@ export default function Viewport({ project, selection, onSelect, jointValues, op
     const opt = optRef.current
     for (const [id, rec] of st.linkObjs.entries()) {
       const isSel = sel?.type === 'link' && sel.id === id
-      rec.material.emissive.setHex(isSel ? 0x1f5fbf : 0x000000)
-      rec.material.emissiveIntensity = isSel ? 0.9 : 0
+      // 选中高亮：轻微蓝色自发光 + 琥珀包围盒，避免整个零件发蓝发亮
+      rec.material.emissive.setHex(isSel ? 0x123c73 : 0x000000)
+      rec.material.emissiveIntensity = isSel ? 0.26 : 0
       rec.axes.visible = !!(opt.showAxes && rec.meshWrap.children.length)
       rec.com.visible = !!(opt.showCom && rec.link?.mesh?.dataBase64)
     }
@@ -437,11 +589,31 @@ export default function Viewport({ project, selection, onSelect, jointValues, op
       const axis = new THREE.Vector3(j.axis?.x || 0, j.axis?.y || 0, j.axis?.z || 0)
       if (axis.lengthSq() < 1e-12) axis.set(0, 0, 1)
       axis.normalize().transformDirection(fm)
-      const len = 0.055
+      const len = 0.042
       arrow.setDirection(axis)
-      arrow.setLength(len, len * 0.28, len * 0.16)
+      arrow.setLength(len, len * 0.24, len * 0.13)
       arrow.visible = !!optRef.current.showJointAxes
     }
+  }
+
+  function fitLight(st, center, radius) {
+    const key = st.keyLight
+    if (!key) return
+    const r = Math.max(radius * 1.9, 0.07)
+    key.target.position.copy(center)
+    key.target.updateMatrixWorld()
+    key.position.copy(center).add(
+      new THREE.Vector3(-0.5, 0.62, 0.95).normalize().multiplyScalar(r * 3.4)
+    )
+    const cam = key.shadow.camera
+    cam.left = -r
+    cam.right = r
+    cam.top = r
+    cam.bottom = -r
+    cam.near = Math.max(r * 0.15, 0.001)
+    cam.far = r * 8
+    cam.updateProjectionMatrix()
+    key.shadow.needsUpdate = true
   }
 
   function fitView(st) {
@@ -457,13 +629,21 @@ export default function Viewport({ project, selection, onSelect, jointValues, op
     if (!has) box.set(new THREE.Vector3(-0.08, -0.08, -0.08), new THREE.Vector3(0.08, 0.08, 0.08))
     const sphere = box.getBoundingSphere(new THREE.Sphere())
     const radius = Math.max(sphere.radius, 0.02)
-    const dist = (radius / Math.sin(THREE.MathUtils.degToRad(st.camera.fov / 2))) * 1.45
-    const dir = new THREE.Vector3(0.85, -1.05, 0.72).normalize()
+    const dist = (radius / Math.sin(THREE.MathUtils.degToRad(st.camera.fov / 2))) * 1.1
+    const dir = new THREE.Vector3(0.9, -1.02, 0.6).normalize()
     st.controls.target.copy(sphere.center)
     st.camera.position.copy(sphere.center).add(dir.multiplyScalar(dist))
     st.camera.near = Math.max(dist / 5000, 1e-4)
     st.camera.far = dist * 30
     st.camera.updateProjectionMatrix()
+
+    // 地面（网格 + 接影）贴到模型最低点，形成接触阴影
+    const groundZ = box.min.z - 0.0006
+    if (st.grid) st.grid.position.z = groundZ
+    if (st.floor) st.floor.position.z = groundZ - 0.0004
+    if (st.shadowOverlay) st.shadowOverlay.position.z = groundZ - 0.0002
+
+    fitLight(st, sphere.center, radius)
     st.controls.update()
     st.needsFit = false
   }
@@ -486,6 +666,12 @@ export default function Viewport({ project, selection, onSelect, jointValues, op
 
   return (
     <div className="viewport" ref={hostRef}>
+      {!project.links.length ? (
+        <div className="viewport-empty">
+          <div className="ve-title">还没有零件</div>
+          <div className="ve-sub">从左栏上传 STL / OBJ / DAE，或点右上角「载入示例」</div>
+        </div>
+      ) : null}
       <div className="viewport-legend">
         <span><i className="dot dot-com" />质心</span>
         <span><i className="dot dot-axis" />关节轴</span>
