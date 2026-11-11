@@ -124,7 +124,7 @@ export function Empty({ children }) {
 
 export function Toggle({ checked, onChange, label, title }) {
   return (
-    <label className="toggle" title={title}>
+    <label className={`toggle ${checked ? 'on' : ''}`} title={title}>
       <input type="checkbox" checked={!!checked} onChange={(e) => onChange(e.target.checked)} />
       <span>{label}</span>
     </label>
