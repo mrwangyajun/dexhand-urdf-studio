@@ -108,9 +108,9 @@ for (const p of parts) {
 // ---------- 写工程文件 ----------
 const byName = Object.fromEntries(parts.map((p) => [p.name, p]))
 const linkDefs = [
-  { name: 'palm', part: byName.palm, color: '#8ea2b8' },
-  { name: 'f1_proximal', part: byName.f1_proximal, color: '#7fa8d8' },
-  { name: 'f1_middle', part: byName.f1_middle, color: '#8fc7a8' },
+  { name: 'palm', part: byName.palm, color: '#7f90a6' },
+  { name: 'f1_proximal', part: byName.f1_proximal, color: '#5f8fc4' },
+  { name: 'f1_middle', part: byName.f1_middle, color: '#5fae90' },
   { name: 'f1_distal', part: byName.f1_distal, color: '#d8b878' }
 ]
 

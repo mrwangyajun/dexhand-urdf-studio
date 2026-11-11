@@ -354,12 +354,14 @@ export default function App() {
 
         <div className="spacer" />
 
-        <button onClick={newProject}>新建</button>
-        <button onClick={loadSample} title="手掌 + 1 指 3 关节示例">
-          载入示例
-        </button>
-        <button onClick={() => fileRef.current?.click()}>打开工程</button>
-        <button onClick={saveProject}>保存工程</button>
+        <div className="tb-group">
+          <button onClick={newProject}>新建</button>
+          <button onClick={loadSample} title="手掌 + 1 指 3 关节示例">
+            载入示例
+          </button>
+          <button onClick={() => fileRef.current?.click()}>打开工程</button>
+          <button onClick={saveProject}>保存工程</button>
+        </div>
         <input
           ref={fileRef}
           type="file"
@@ -375,17 +377,34 @@ export default function App() {
         <div className="vsep" />
 
         <button
-          className={`status-pill ${validation.canExport ? (validation.warnCount ? 'warn' : 'ok') : 'err'}`}
+          className={`status-pill ${
+            !project.links.length ? 'idle' : validation.canExport ? (validation.warnCount ? 'warn' : 'ok') : 'err'
+          }`}
           onClick={() => {
             setDrawerTab('check')
             setDrawerOpen(true)
           }}
           title="查看校验详情"
         >
-          {validation.canExport ? (validation.warnCount ? `${validation.warnCount} 警告` : '校验通过') : `${validation.errorCount} 错误`}
+          {!project.links.length
+            ? '空工程'
+            : validation.canExport
+              ? validation.warnCount
+                ? `${validation.warnCount} 警告`
+                : '校验通过'
+              : `${validation.errorCount} 错误`}
         </button>
 
         <button className="primary" onClick={() => setDialog('export')}>
+          <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path
+              d="M8 2v7m0 0L5.2 6.2M8 9l2.8-2.8M3 11.5v1.2c0 .7.6 1.3 1.3 1.3h7.4c.7 0 1.3-.6 1.3-1.3v-1.2"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
           导出 URDF
         </button>
       </header>

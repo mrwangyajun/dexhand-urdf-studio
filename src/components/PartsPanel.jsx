@@ -89,19 +89,26 @@ export default function PartsPanel({
                     <div className="part-name" title={l.name}>
                       {l.name}
                       {project.rootId === l.id ? <Badge tone="blue">root</Badge> : null}
+                      {l.massSource ? (
+                        <span className="mass-dot" title="质量属性已识别（可点右侧「重新识别」查看来源）" />
+                      ) : null}
                     </div>
-                    <div className="part-sub">
-                      {l.mesh ? (
-                        <>
-                          {l.mesh.fileName} · {fmtBytes(l.mesh.size)} · 单位 {l.mesh.unitScale}
-                        </>
-                      ) : (
-                        <span className="text-warn">无网格</span>
-                      )}
-                    </div>
-                    <div className="part-badges">
+                    <div className="part-meta">
+                      <span className="part-sub" title={l.mesh?.fileName}>
+                        {l.mesh ? (
+                          <>
+                            {l.mesh.fileName} · {fmtBytes(l.mesh.size)} · {l.mesh.unitScale}
+                          </>
+                        ) : (
+                          <span className="text-warn">无网格</span>
+                        )}
+                      </span>
                       {l.placeholder ? <Badge tone="warn">占位值</Badge> : null}
-                      {!l.massSource ? <Badge tone="gray">未识别质量属性</Badge> : <Badge tone="ok">已识别</Badge>}
+                      {l.massSource ? null : (
+                        <Badge tone="gray" title="还没导入质量属性，可在右侧手填">
+                          未识别质量
+                        </Badge>
+                      )}
                     </div>
                   </div>
                   <div className="part-actions" onClick={(e) => e.stopPropagation()}>

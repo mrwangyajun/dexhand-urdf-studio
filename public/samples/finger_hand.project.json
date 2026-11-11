@@ -30,7 +30,7 @@
         "izz": 0.00035170875
       },
       "inertiaFrame": "com",
-      "color": "#8ea2b8",
+      "color": "#7f90a6",
       "placeholder": false,
       "massSource": {
         "fileName": "palm.txt",
@@ -67,7 +67,7 @@
         "izz": 0.000001189728
       },
       "inertiaFrame": "com",
-      "color": "#7fa8d8",
+      "color": "#5f8fc4",
       "placeholder": false,
       "massSource": {
         "fileName": "f1_proximal.txt",
@@ -104,7 +104,7 @@
         "izz": 6.203392e-7
       },
       "inertiaFrame": "com",
-      "color": "#8fc7a8",
+      "color": "#5fae90",
       "placeholder": false,
       "massSource": {
         "fileName": "f1_middle.txt",
