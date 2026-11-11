@@ -28,9 +28,9 @@ npm run dev          # 打开 http://localhost:5173
 | --- | --- |
 | `npm run build` | 产出 `dist/` 静态站点（`base: './'`，可放任意子目录） |
 | `npm run preview` | 本地预览构建产物（端口 4173） |
-| `npm run selftest` | 无浏览器的核心逻辑自测（解析 / 惯量 / URDF / 校验 / 打包，53 项） |
+| `npm run selftest` | 无浏览器的核心逻辑自测（解析 / 惯量 / URDF / 校验 / 打包，64 项） |
 | `npm run verify` | 生成 zip → 解压 → 用 `tools/check_urdf.py` 实测（含坏包反例） |
-| `npm run e2e` | 无头 Edge 跑真实交互（需先 `npm run dev`），并输出截图到 `shots/` |
+| `npm run e2e` | 无头 Edge 跑真实交互（需先 `npm run dev`，34 项断言），截图输出到 `shots/` |
 
 > 需要 Node ≥ 18。`npm run dev` 默认监听 localhost；若要局域网访问用 `npm run dev -- --host`。
 
@@ -227,7 +227,7 @@ samples/templates/link_params.csv # 参数表模板
 6. **DAE 贴图不加载**：几何能显示，材质统一用 link 颜色。
 7. 关节类型只支持 URDF 四类常用类型，未做 `planar` / `floating`。
 8. 网格 > 3.5 MB 时，浏览器自动保存会剥离 base64（防止 localStorage 溢出），请用「保存工程」落盘。
-9. 数值导出保留 9 位小数，不使用科学计数法；极小惯量（<1e-12）会写成 0。
+9. 数值导出不用科学计数法：小数位按量级自适应（<1 的数最多 15 位），极小值（<1e-12）写成 0。
 10. 大装配（>100 links）没有做实例化渲染优化。
 
 ## 10. 下一步建议（backlog）
@@ -267,10 +267,11 @@ dexhand-urdf-studio/
 │   └── components/             # Viewport / 面板 / 弹窗 / 通用控件
 ├── scripts/
 │   ├── gen-samples.mjs         # 生成示例网格与质量属性文本
-│   ├── selftest.mjs            # 53 项核心逻辑断言
+│   ├── selftest.mjs            # 64 项核心逻辑断言
 │   ├── verify-export.mjs       # 导出包 + Python 校验器实测
-│   └── e2e.mjs                 # 无头浏览器交互测试
+│   └── e2e.mjs                 # 无头浏览器交互测试（34 项）
 ├── tools/check_urdf.py         # 独立校验器（也随导出包分发）
 ├── samples/                    # 示例数据与参数表模板
-└── public/samples/             # 供页面 fetch 的示例
+├── public/samples/             # 供页面 fetch 的示例
+└── examples/dex_hand_demo_urdf.zip  # 示例导出包（可直接解压查看/校验）
 ```
