@@ -117,12 +117,17 @@ export function firstNumber(text) {
   return parseNumber(m[0])
 }
 
-/** 数值输出：去掉多余 0，不用科学计数法 */
+/**
+ * 数值输出：去掉多余 0，不用科学计数法。
+ * 小数自动加位：小于 1 的数按量级多给几位，避免 6.3e-7 这样的惯量被截断。
+ */
 export function fmt(v, maxDec = 9) {
   const n = Number(v)
   if (!Number.isFinite(n)) return '0'
   if (Math.abs(n) < 1e-12) return '0'
-  let s = n.toFixed(maxDec)
+  const abs = Math.abs(n)
+  const dec = abs >= 1 ? maxDec : Math.min(15, Math.max(maxDec, Math.ceil(-Math.log10(abs)) + 7))
+  let s = n.toFixed(dec)
   if (s.includes('.')) s = s.replace(/0+$/, '').replace(/\.$/, '')
   return s === '-0' ? '0' : s
 }

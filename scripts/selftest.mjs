@@ -227,6 +227,9 @@ ok('palm 质量与面板一致', near(palmIn.mass, project.links[0].mass, 1e-9),
 ok('palm 质心与面板一致', near(palmIn.xyz[0], project.links[0].com.x, 1e-9))
 ok('palm 惯量与面板一致', near(palmIn.inertia.ixx, project.links[0].inertia.ixx, 1e-8), String(palmIn.inertia.ixx))
 
+// 数值精度：微小惯量不能被截断成 0.0000006
+ok('微小惯量保留有效位数', /ixx="0\.000000629856"/.test(urdf), urdf.match(/ixx="[^"]*"/)?.slice(0, 12).join(' '))
+
 // 改参数 -> 输出同步
 const modified = JSON.parse(JSON.stringify(project))
 const jm = modified.joints.find((j) => j.name === 'f1_joint_mcp')
