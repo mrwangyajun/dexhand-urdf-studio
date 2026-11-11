@@ -1,0 +1,26 @@
+{
+  "name": "dexhand-urdf-studio",
+  "private": true,
+  "version": "0.1.0",
+  "description": "分件赋参 -> 在线拼装 -> 导出完整 URDF 的纯前端工具（灵巧手结构工程师用）",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview --port 4173",
+    "samples": "node scripts/gen-samples.mjs",
+    "selftest": "node scripts/selftest.mjs",
+    "verify": "node scripts/verify-export.mjs",
+    "e2e": "node scripts/e2e.mjs"
+  },
+  "dependencies": {
+    "jszip": "^3.10.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "three": "^0.169.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.4",
+    "vite": "^5.4.11"
+  }
+}
