@@ -1,0 +1,250 @@
+{
+  "version": 1,
+  "robotName": "dex_hand_demo",
+  "createdAt": "2026-11-11T00:00:00.000Z",
+  "updatedAt": "2026-11-11T00:00:00.000Z",
+  "rootId": "link_palm",
+  "meshBaseDir": "meshes/",
+  "links": [
+    {
+      "id": "link_palm",
+      "name": "palm",
+      "mesh": {
+        "fileName": "palm.stl",
+        "unitScale": "mm",
+        "format": "stl",
+        "size": 684
+      },
+      "mass": 0.2754,
+      "com": {
+        "x": 0.025,
+        "y": 0,
+        "z": 0
+      },
+      "inertia": {
+        "ixx": 0.00018646875,
+        "ixy": 0,
+        "ixz": 0,
+        "iyy": 0.00020655,
+        "iyz": 0,
+        "izz": 0.00035170875
+      },
+      "inertiaFrame": "com",
+      "color": "#8ea2b8",
+      "placeholder": false,
+      "massSource": {
+        "fileName": "palm.txt",
+        "rawUnits": {
+          "mass": "g",
+          "length": "mm",
+          "inertia": "g*mm^2"
+        },
+        "note": "示例数据：由 gen-samples.mjs 按密度 1200 kg/m³ 生成，与 samples/massprops/*.txt 数值一致",
+        "parsedAt": "2026-11-11T00:00:00.000Z"
+      }
+    },
+    {
+      "id": "link_f1_proximal",
+      "name": "f1_proximal",
+      "mesh": {
+        "fileName": "f1_proximal.stl",
+        "unitScale": "mm",
+        "format": "stl",
+        "size": 684
+      },
+      "mass": 0.011664,
+      "com": {
+        "x": 0.015,
+        "y": 0,
+        "z": 0
+      },
+      "inertia": {
+        "ixx": 6.29856e-7,
+        "ixy": 0,
+        "ixz": 0,
+        "iyy": 0.000001189728,
+        "iyz": 0,
+        "izz": 0.000001189728
+      },
+      "inertiaFrame": "com",
+      "color": "#7fa8d8",
+      "placeholder": false,
+      "massSource": {
+        "fileName": "f1_proximal.txt",
+        "rawUnits": {
+          "mass": "g",
+          "length": "mm",
+          "inertia": "g*mm^2"
+        },
+        "note": "示例数据：由 gen-samples.mjs 按密度 1200 kg/m³ 生成，与 samples/massprops/*.txt 数值一致",
+        "parsedAt": "2026-11-11T00:00:00.000Z"
+      }
+    },
+    {
+      "id": "link_f1_middle",
+      "name": "f1_middle",
+      "mesh": {
+        "fileName": "f1_middle.stl",
+        "unitScale": "mm",
+        "format": "stl",
+        "size": 684
+      },
+      "mass": 0.0079872,
+      "com": {
+        "x": 0.013,
+        "y": 0,
+        "z": 0
+      },
+      "inertia": {
+        "ixx": 3.407872e-7,
+        "ixy": 0,
+        "ixz": 0,
+        "iyy": 6.203392e-7,
+        "iyz": 0,
+        "izz": 6.203392e-7
+      },
+      "inertiaFrame": "com",
+      "color": "#8fc7a8",
+      "placeholder": false,
+      "massSource": {
+        "fileName": "f1_middle.txt",
+        "rawUnits": {
+          "mass": "g",
+          "length": "mm",
+          "inertia": "g*mm^2"
+        },
+        "note": "示例数据：由 gen-samples.mjs 按密度 1200 kg/m³ 生成，与 samples/massprops/*.txt 数值一致",
+        "parsedAt": "2026-11-11T00:00:00.000Z"
+      }
+    },
+    {
+      "id": "link_f1_distal",
+      "name": "f1_distal",
+      "mesh": {
+        "fileName": "f1_distal.stl",
+        "unitScale": "mm",
+        "format": "stl",
+        "size": 684
+      },
+      "mass": 0.00594,
+      "com": {
+        "x": 0.011,
+        "y": 0,
+        "z": 0
+      },
+      "inertia": {
+        "ixx": 2.2275e-7,
+        "ixy": 0,
+        "ixz": 0,
+        "iyy": 3.50955e-7,
+        "iyz": 0,
+        "izz": 3.50955e-7
+      },
+      "inertiaFrame": "com",
+      "color": "#d8b878",
+      "placeholder": false,
+      "massSource": {
+        "fileName": "f1_distal.txt",
+        "rawUnits": {
+          "mass": "g",
+          "length": "mm",
+          "inertia": "g*mm^2"
+        },
+        "note": "示例数据：由 gen-samples.mjs 按密度 1200 kg/m³ 生成，与 samples/massprops/*.txt 数值一致",
+        "parsedAt": "2026-11-11T00:00:00.000Z"
+      }
+    }
+  ],
+  "joints": [
+    {
+      "id": "joint_f1_abd",
+      "name": "f1_joint_abd",
+      "type": "revolute",
+      "parentId": "link_palm",
+      "childId": "link_f1_proximal",
+      "origin": {
+        "xyz": {
+          "x": 0.07,
+          "y": 0.02,
+          "z": 0
+        },
+        "rpy": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
+      },
+      "axis": {
+        "x": 0,
+        "y": 0,
+        "z": 1
+      },
+      "limit": {
+        "lower": -0.35,
+        "upper": 0.35,
+        "effort": 2,
+        "velocity": 2
+      }
+    },
+    {
+      "id": "joint_f1_mcp",
+      "name": "f1_joint_mcp",
+      "type": "revolute",
+      "parentId": "link_f1_proximal",
+      "childId": "link_f1_middle",
+      "origin": {
+        "xyz": {
+          "x": 0.03,
+          "y": 0,
+          "z": 0
+        },
+        "rpy": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
+      },
+      "axis": {
+        "x": 0,
+        "y": 1,
+        "z": 0
+      },
+      "limit": {
+        "lower": -1.4,
+        "upper": 0.05,
+        "effort": 1.5,
+        "velocity": 3
+      }
+    },
+    {
+      "id": "joint_f1_dip",
+      "name": "f1_joint_dip",
+      "type": "revolute",
+      "parentId": "link_f1_middle",
+      "childId": "link_f1_distal",
+      "origin": {
+        "xyz": {
+          "x": 0.026,
+          "y": 0,
+          "z": 0
+        },
+        "rpy": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
+      },
+      "axis": {
+        "x": 0,
+        "y": 1,
+        "z": 0
+      },
+      "limit": {
+        "lower": -1.5,
+        "upper": 0.05,
+        "effort": 1,
+        "velocity": 3
+      }
+    }
+  ]
+}

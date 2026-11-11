@@ -1,0 +1,33 @@
+Mass properties of palm
+Configuration: Default
+Coordinate system: -- default --
+Density = 0.001200 grams/mm^3
+
+Mass = 275.4000 grams
+Volume = 229500.00 cubic millimeters
+Surface area = 25800.00 square millimeters
+Center of mass: ( millimeters )
+	X = 25.00
+	Y = 0.00
+	Z = 0.00
+
+Principal axes of inertia and principal moments of inertia: ( grams * square millimeters )
+Taken at the center of mass.
+	Ix = (1.00, 0.00, 0.00)	Px = 186468.75
+	Iy = (0.00, 1.00, 0.00)	Py = 206550.00
+	Iz = (0.00, 0.00, 1.00)	Pz = 351708.75
+
+Moments of inertia: ( grams * square millimeters )
+Taken at the center of mass.
+	Lxx = 186468.75	Lxy = 0.00	Lzx = 0.00
+	Lyy = 206550.00	Lyz = 0.00
+	Lzz = 351708.75
+
+Moments of inertia: ( grams * square millimeters )
+Taken at the output coordinate system.
+	Ixx = 186468.75
+	Ixy = 0.00
+	Ixz = 0.00
+	Iyy = 206722.13
+	Iyz = 0.00
+	Izz = 351880.88

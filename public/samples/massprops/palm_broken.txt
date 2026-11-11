@@ -1,0 +1,14 @@
+Mass properties of palm
+Configuration: Default
+Mass = 275.4000 grams
+Volume = 229500.00 cubic millimeters
+Center of mass: ( millimeters )
+	X = 25.00
+	Y = 0.00
+	Z = 0.00
+
+Moments of inertia: ( grams * square millimeters )
+Taken at the center of mass.
+	Lxx = ???	Lxy = n/a	Lzx = n/a
+	Lyy = ???	Lyz = n/a
+	Lzz = ???

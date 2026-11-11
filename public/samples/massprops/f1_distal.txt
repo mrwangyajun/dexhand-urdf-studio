@@ -1,0 +1,33 @@
+Mass properties of f1_distal
+Configuration: Default
+Coordinate system: -- default --
+Density = 0.001200 grams/mm^3
+
+Mass = 5.9400 grams
+Volume = 4950.00 cubic millimeters
+Surface area = 1770.00 square millimeters
+Center of mass: ( millimeters )
+	X = 11.00
+	Y = 0.00
+	Z = 0.00
+
+Principal axes of inertia and principal moments of inertia: ( grams * square millimeters )
+Taken at the center of mass.
+	Ix = (1.00, 0.00, 0.00)	Px = 222.75
+	Iy = (0.00, 1.00, 0.00)	Py = 350.95
+	Iz = (0.00, 0.00, 1.00)	Pz = 350.95
+
+Moments of inertia: ( grams * square millimeters )
+Taken at the center of mass.
+	Lxx = 222.75	Lxy = 0.00	Lzx = 0.00
+	Lyy = 350.95	Lyz = 0.00
+	Lzz = 350.95
+
+Moments of inertia: ( grams * square millimeters )
+Taken at the output coordinate system.
+	Ixx = 222.75
+	Ixy = 0.00
+	Ixz = 0.00
+	Iyy = 351.67
+	Iyz = 0.00
+	Izz = 351.67
