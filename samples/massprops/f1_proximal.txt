@@ -1,0 +1,33 @@
+Mass properties of f1_proximal
+Configuration: Default
+Coordinate system: -- default --
+Density = 0.001200 grams/mm^3
+
+Mass = 11.6640 grams
+Volume = 9720.00 cubic millimeters
+Surface area = 2808.00 square millimeters
+Center of mass: ( millimeters )
+	X = 15.00
+	Y = 0.00
+	Z = 0.00
+
+Principal axes of inertia and principal moments of inertia: ( grams * square millimeters )
+Taken at the center of mass.
+	Ix = (1.00, 0.00, 0.00)	Px = 629.86
+	Iy = (0.00, 1.00, 0.00)	Py = 1189.73
+	Iz = (0.00, 0.00, 1.00)	Pz = 1189.73
+
+Moments of inertia: ( grams * square millimeters )
+Taken at the center of mass.
+	Lxx = 629.86	Lxy = 0.00	Lzx = 0.00
+	Lyy = 1189.73	Lyz = 0.00
+	Lzz = 1189.73
+
+Moments of inertia: ( grams * square millimeters )
+Taken at the output coordinate system.
+	Ixx = 629.86
+	Ixy = 0.00
+	Ixz = 0.00
+	Iyy = 1192.35
+	Iyz = 0.00
+	Izz = 1192.35

@@ -1,0 +1,5 @@
+link,mass_kg,com_x,com_y,com_z,ixx,ixy,ixz,iyy,iyz,izz,inertia_frame,mesh_file,mesh_unit
+palm,0.2754,0.025,0,0,0.00018646875,0,0,0.00020655,0,0.00035170875,com,palm.stl,mm
+f1_proximal,0.011664,0.015,0,0,0.000000629856,0,0,0.000001189728,0,0.000001189728,com,f1_proximal.stl,mm
+f1_middle,0.0079872,0.013,0,0,0.0000003407872,0,0,0.0000006203392,0,0.0000006203392,com,f1_middle.stl,mm
+f1_distal,0.00594,0.011,0,0,0.00000022275,0,0,0.000000350955,0,0.000000350955,com,f1_distal.stl,mm
