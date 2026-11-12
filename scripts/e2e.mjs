@@ -1,19 +1,23 @@
 /**
- * 端到端冒烟测试：无头 Edge + CDP
+ * 端到端冒烟测试：无头 Chromium 内核浏览器（Chrome / Edge / Chromium）+ CDP
  * 用法： node scripts/e2e.mjs
  * 前置： npm run dev 已启动（默认 http://127.0.0.1:5173）
+ * 环境变量：
+ *   E2E_BROWSER  指定浏览器可执行文件；不设则自动探测
+ *   E2E_URL      指定被测地址，默认 http://localhost:5173/
  */
 import { spawn } from 'node:child_process'
 import fs from 'node:fs'
 import os from 'node:os'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { findBrowser } from './lib/browser.mjs'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const OUT = path.join(path.resolve(__dirname, '..'), 'shots')
 fs.mkdirSync(OUT, { recursive: true })
 
-const EDGE = 'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'
+const BROWSER = findBrowser()
 const PORT = 9333
 const URL_TARGET = process.env.E2E_URL || 'http://localhost:5173/'
 const profile = fs.mkdtempSync(path.join(os.tmpdir(), 'urdf-e2e-'))
@@ -21,7 +25,7 @@ const profile = fs.mkdtempSync(path.join(os.tmpdir(), 'urdf-e2e-'))
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms))
 
 const proc = spawn(
-  EDGE,
+  BROWSER,
   [
     '--headless=new',
     `--remote-debugging-port=${PORT}`,

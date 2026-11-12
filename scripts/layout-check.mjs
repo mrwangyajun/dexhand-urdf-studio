@@ -6,8 +6,9 @@ import { spawn } from 'node:child_process'
 import fs from 'node:fs'
 import os from 'node:os'
 import path from 'node:path'
+import { findBrowser } from './lib/browser.mjs'
 
-const EDGE = 'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'
+const BROWSER = findBrowser()
 const PORT = 9351
 const SIZES = [
   [1920, 1080],
@@ -18,7 +19,7 @@ const SIZES = [
 ]
 const profile = fs.mkdtempSync(path.join(os.tmpdir(), 'layout-'))
 const proc = spawn(
-  EDGE,
+  BROWSER,
   [
     '--headless=new',
     `--remote-debugging-port=${PORT}`,
@@ -71,7 +72,7 @@ const ev = async (expr) => {
 let bad = 0
 for (const [w, h] of SIZES) {
   await send('Emulation.setDeviceMetricsOverride', { width: w, height: h, deviceScaleFactor: 1, mobile: false })
-  await send('Page.navigate', { url: 'http://localhost:5173/' })
+  await send('Page.navigate', { url: process.env.E2E_URL || 'http://localhost:5173/' })
   await sleep(1200)
   // 用「三指灵巧手」这个最挤的示例：10 个零件 + 9 个关节滑块
   await ev(`(() => { const b = [...document.querySelectorAll('button')].find(x => x.textContent.includes('载入示例')); b && b.click(); return 1 })()`)

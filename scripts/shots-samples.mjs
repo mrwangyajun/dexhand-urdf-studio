@@ -6,14 +6,15 @@ import { spawn } from 'node:child_process'
 import fs from 'node:fs'
 import os from 'node:os'
 import path from 'node:path'
+import { findBrowser } from './lib/browser.mjs'
 
-const EDGE = process.env.EDGE_PATH || 'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'
+const BROWSER = findBrowser()
 const PORT = 9361
 const W = 1680
 const H = 980
 const profile = fs.mkdtempSync(path.join(os.tmpdir(), 'shots-'))
 const proc = spawn(
-  EDGE,
+  BROWSER,
   [
     '--headless=new',
     `--remote-debugging-port=${PORT}`,
@@ -61,7 +62,7 @@ const send = (method, params = {}) => {
 await send('Page.enable')
 await send('Runtime.enable')
 await send('Emulation.setDeviceMetricsOverride', { width: W, height: H, deviceScaleFactor: 1, mobile: false })
-await send('Page.navigate', { url: 'http://localhost:5173/' })
+await send('Page.navigate', { url: process.env.E2E_URL || 'http://localhost:5173/' })
 await sleep(1800)
 
 const ev = async (expr) => {
