@@ -151,15 +151,38 @@ const main = async () => {
   ok('左侧零件库存在', await evaluate(`!!document.querySelector('.panel-part')`))
   ok('viewport canvas 存在', await evaluate(`!!document.querySelector('canvas')`))
 
-  // ---------- 载入示例 ----------
-  console.log('\n[E2E] 载入示例工程')
-  await evaluate(`
+  // ---------- 示例库 ----------
+  console.log('\n[E2E] 示例库（三指灵巧手 / Barrett / 单指）')
+  const openGallery = async () => {
+    await evaluate(`
+      (() => {
+        const btn = [...document.querySelectorAll('button')].find(b => b.textContent.includes('载入示例'))
+        btn.click()
+        return true
+      })()
+    `)
+    await waitFor(`!!document.querySelector('.modal .sample-card')`, { label: '示例库打开' })
+  }
+  const loadSample = async (file) => {
+    await openGallery()
+    await evaluate(`(() => { document.querySelector('.sample-card[data-file="${file}"]').click(); return 1 })()`)
+    await waitFor(`!document.querySelector('.sample-card')`, { label: '示例库关闭' })
+    await sleep(900)
+  }
+
+  await openGallery()
+  const cards = await evaluate(`[...document.querySelectorAll('.sample-card')].map(c => c.dataset.file)`)
+  ok('示例库列出 3 个示例', cards.length === 3, JSON.stringify(cards))
+  ok('示例库含 Barrett Hand', cards.includes('barrett_bh8.project.json'))
+  ok('示例库含三指灵巧手', cards.includes('three_finger.project.json'))
+  ok('卡片显示连杆/关节数与总质量', await evaluate(`
     (() => {
-      const btn = [...document.querySelectorAll('button')].find(b => b.textContent.includes('载入示例'))
-      btn.click()
-      return true
+      const t = document.querySelector('.sample-card .sc-stats')?.textContent || ''
+      return /links/.test(t) && /joints/.test(t) && /总质量/.test(t)
     })()
-  `)
+  `))
+  await shot('00-sample-gallery.png')
+  await evaluate(`(() => { document.querySelector('.sample-card[data-file="finger_hand.project.json"]').click(); return 1 })()`)
   await waitFor(`document.querySelectorAll('.part-item').length >= 4`, { label: '4 个零件入库' })
   await sleep(1200)
   const counts = await evaluate(`({
@@ -412,6 +435,51 @@ Taken at the center of mass.
       return b.textContent.includes('错误') || b.textContent.includes('警告') || b.textContent.includes('校验通过')
     })()
   `))
+
+  // ---------- 三指示例：Barrett Hand ----------
+  console.log('\n[E2E] Barrett Hand（真实运动学参数）')
+  await loadSample('barrett_bh8.project.json')
+  const bar = await evaluate(`({
+    parts: document.querySelectorAll('.part-item').length,
+    joints: document.querySelectorAll('.tree-joint').length,
+    status: document.querySelector('.status-pill')?.textContent,
+    robot: document.querySelector('.robot-name input')?.value
+  })`)
+  ok('Barrett 载入 9 个连杆', bar.parts === 9, JSON.stringify(bar))
+  ok('Barrett 载入 8 个关节', bar.joints === 8, String(bar.joints))
+  ok('Barrett 校验通过', /校验通过/.test(bar.status || ''), bar.status)
+  ok('robotName 切换为 barrett_bh8_280', bar.robot === 'barrett_bh8_280', bar.robot)
+
+  await evaluate(`[...document.querySelectorAll('.drawer-tabs button')].find(b=>b.textContent.includes('URDF 预览')).click()`)
+  await sleep(500)
+  const barUrdf = await evaluate(`document.querySelector('.drawer-body pre.code')?.textContent || ''`)
+  ok('Barrett URDF 含 9 个 link', (barUrdf.match(/<link /g) || []).length === 9, String((barUrdf.match(/<link /g) || []).length))
+  ok('Barrett 中节限位 140°', barUrdf.includes('upper="2.443460953"'))
+  ok('Barrett 近节轴保留 0 0 -1', barUrdf.includes('<axis xyz="0 0 -1"'))
+  ok('Barrett palm 质量 0.50573', barUrdf.includes('value="0.50573"'))
+  ok('Barrett origin rpy 90°', barUrdf.includes('rpy="1.570796327 0 1.570796327"'))
+
+  // 关节拖动同步到 URDF
+  await evaluate(`
+    (() => {
+      const row = [...document.querySelectorAll('.jb-item')][0]
+      const input = row.querySelector('input[type=range]')
+      const setter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set
+      setter.call(input, String(Number(input.max) * 0.5))
+      input.dispatchEvent(new Event('input', { bubbles: true }))
+      return true
+    })()
+  `)
+  await sleep(600)
+  ok('关节滑块改变后 3D 有响应', await evaluate(`!!window.__dexhandViewport.worldMatrix('link_f1_med_link')`))
+
+  // 视角预设
+  await evaluate(`(() => { [...document.querySelectorAll('.view-presets button')].find(b=>b.textContent.includes('前视')).click(); return 1 })()`)
+  await sleep(700)
+  ok('视角预设切到前视', await evaluate(`document.querySelector('.view-presets button.on')?.textContent === '前视'`))
+  await shot('10-barrett-front.png')
+  await evaluate(`(() => { [...document.querySelectorAll('.view-presets button')].find(b=>b.textContent.includes('等轴')).click(); return 1 })()`)
+  await sleep(700)
 
   // ---------- 错误检查 ----------
   console.log('\n[E2E] 控制台检查')

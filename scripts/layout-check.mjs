@@ -73,8 +73,26 @@ for (const [w, h] of SIZES) {
   await send('Emulation.setDeviceMetricsOverride', { width: w, height: h, deviceScaleFactor: 1, mobile: false })
   await send('Page.navigate', { url: 'http://localhost:5173/' })
   await sleep(1200)
+  // 用「三指灵巧手」这个最挤的示例：10 个零件 + 9 个关节滑块
   await ev(`(() => { const b = [...document.querySelectorAll('button')].find(x => x.textContent.includes('载入示例')); b && b.click(); return 1 })()`)
-  await sleep(2400)
+  await sleep(900)
+  await ev(`(() => { const c = document.querySelector('.sample-card[data-file="three_finger.project.json"]'); c && c.click(); return 1 })()`)
+  await sleep(2600)
+  // 关节条必须能容纳全部 9 个滑块（换行后不被裁）
+  const jb = await ev(`(() => {
+    const el = document.querySelector('.jointbar')
+    if (!el) return 'no jointbar'
+    const items = [...el.querySelectorAll('.jb-item')]
+    const hidden = items.filter(i => {
+      const r = i.getBoundingClientRect()
+      return r.right > el.getBoundingClientRect().right + 1 || r.bottom > el.getBoundingClientRect().bottom + 1
+    }).length
+    return { n: items.length, hidden }
+  })()`)
+  if (typeof jb === 'object' && jb.hidden > 0) {
+    console.log(`${w}x${h}: ✗ 关节条有 ${jb.hidden}/${jb.n} 个滑块被裁`)
+    bad++
+  }
 
   const report = await ev(`(() => {
     const out = []

@@ -11,7 +11,9 @@
     "samples": "node scripts/gen-samples.mjs",
     "selftest": "node scripts/selftest.mjs",
     "verify": "node scripts/verify-export.mjs",
-    "e2e": "node scripts/e2e.mjs"
+    "e2e": "node scripts/e2e.mjs",
+    "examples": "node scripts/make-examples.mjs",
+    "shots": "node scripts/shots.mjs"
   },
   "dependencies": {
     "jszip": "^3.10.1",

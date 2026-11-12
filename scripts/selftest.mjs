@@ -324,6 +324,74 @@ ok('清洗后 URDF 仍良构', true)
 const v4 = validateProject(namesProject)
 ok('重名会被校验发现', v4.items.some((i) => i.code === 'dup-link-name' || i.code === 'unsafe-link-name'))
 
+// ============ 7. 示例库（三指灵巧手 / Barrett） ============
+console.log('\n[7] 示例库')
+const idx = JSON.parse(read('public/samples/index.json'))
+ok('示例库至少 3 个示例', idx.samples.length >= 3, String(idx.samples.length))
+
+function loadSample(file) {
+  const j = JSON.parse(read(`public/samples/${file}`))
+  for (const l of j.links) {
+    const stl = fs.readFileSync(path.join(ROOT, 'public/samples/meshes', l.mesh.fileName))
+    l.mesh.dataBase64 = stl.toString('base64')
+    l.mesh.size = stl.byteLength
+  }
+  return normalizeProject(j)
+}
+
+const barrett = loadSample('barrett_bh8.project.json')
+const three = loadSample('three_finger.project.json')
+
+ok('Barrett：9 links / 8 joints', barrett.links.length === 9 && barrett.joints.length === 8,
+  `${barrett.links.length}/${barrett.joints.length}`)
+ok('Barrett：三指拓扑（f1/f2 各有 3 关节，f3 有 2 关节）',
+  ['f1', 'f2'].every((k) => barrett.joints.filter((j) => j.name.startsWith(k)).length === 3) &&
+    barrett.joints.filter((j) => j.name.startsWith('f3')).length === 2)
+
+const barV = validateProject(barrett)
+ok('Barrett：校验通过、可导出', barV.canExport === true && barV.errorCount === 0,
+  barV.items.map((i) => i.code).join(','))
+
+const barUrdf = buildUrdf(barrett, { robotName: 'barrett_bh8_280' })
+assertWellFormed(barUrdf)
+ok('Barrett URDF 良构', true)
+ok('Barrett：palm 质量写对', /<mass\s+value="0\.50573"/.test(barUrdf), barUrdf.match(/<mass[^>]*>/)?.[0])
+ok('Barrett：中节限位 140° = 2.443461', barUrdf.includes('upper="2.443460953"'), barUrdf.match(/upper="2\.44[^"]*"/)?.[0])
+ok('Barrett：近节轴 0 0 -1 保留方向', barUrdf.includes('<axis xyz="0 0 -1"'), barUrdf.match(/<axis[^>]*>/g)?.slice(0, 3).join(' '))
+ok('Barrett：origin rpy 90° 写成 1.570796327',
+  barUrdf.includes('rpy="1.570796327 0 1.570796327"'), barUrdf.match(/rpy="1\.57[^"]*"/g)?.slice(0, 2).join(' | '))
+ok('Barrett：质量总和 ≈ 1.0985 kg', near(barrett.links.reduce((a, l) => a + l.mass, 0), 1.0985, 1e-4),
+  String(barrett.links.reduce((a, l) => a + l.mass, 0)))
+
+// 质量属性文本与工程数值一致（真实 CAD 参数）
+for (const [file, link] of [
+  ['bhand_palm.txt', 'bhand_palm'],
+  ['f1_prox_link.txt', 'f1_prox_link'],
+  ['f1_dist_link.txt', 'f1_dist_link']
+]) {
+  const parsed = parseMassProperties(read(`samples/massprops/${file}`))
+  const l = barrett.links.find((x) => x.name === link)
+  const dIxx = Math.abs(parsed.inertia.ixx - l.inertia.ixx) / Math.max(l.inertia.ixx, 1e-12)
+  ok(`${file} 解析结果与工程一致`, near(parsed.mass, l.mass, 2e-4) && dIxx < 2e-3,
+    `m ${parsed.mass} vs ${l.mass} / Ixx 偏差 ${(dIxx * 100).toFixed(2)}%`)
+}
+
+const tfV = validateProject(three)
+ok('三指手：10 links / 9 joints 且可导出',
+  three.links.length === 10 && three.joints.length === 9 && tfV.canExport === true,
+  `${three.links.length}/${three.joints.length} ${tfV.errorCount} err`)
+const tfUrdf = buildUrdf(three, { robotName: 'three_finger_hand' })
+assertWellFormed(tfUrdf)
+ok('三指手 URDF 良构且含 9 个 joint', (tfUrdf.match(/<joint\s/g) || []).length === 9)
+ok('三指手：每指三关节命名可读', tfUrdf.includes('name="tf_f3_pip_joint"'))
+ok('三指手：质量属性非零（网格积分）', three.links.every((l) => l.mass > 0 && l.inertia.ixx > 0))
+// 惯量必须满足三角不等式（网格积分容易翻车的点）
+ok('三指手：惯量满足三角不等式',
+  three.links.every((l) => {
+    const { ixx, iyy, izz } = l.inertia
+    return ixx + iyy >= izz - 1e-12 && iyy + izz >= ixx - 1e-12 && ixx + izz >= iyy - 1e-12
+  }))
+
 // ============ 汇总 ============
 console.log(`\n===== ${pass} passed, ${fail} failed =====`)
 if (fail) {
