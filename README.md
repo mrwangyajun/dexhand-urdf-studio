@@ -1,53 +1,107 @@
 # 灵巧手 URDF Studio
 
-> 分件赋参 → 浏览器里在线拼装 → 一键导出完整 URDF + meshes。
-> 给**灵巧手结构工程师**用的纯前端工具，不装 SolidWorks 插件、不读 sldprt、不依赖本地大模型。
+<div align="center">
+
+**分件赋参 → 浏览器里在线拼装 → 一键导出完整 URDF + meshes**
+
+给灵巧手结构工程师用的纯前端工具：不装 SolidWorks 插件、不读 `.sldprt`、不依赖本地大模型。
+
+[![License: MIT](https://img.shields.io/badge/license-MIT-4c9aff.svg)](./LICENSE)
+[![Node](https://img.shields.io/badge/node-%E2%89%A518-3c873a.svg)](https://nodejs.org)
+[![Dependencies](https://img.shields.io/badge/runtime%20deps-4-6e7681.svg)](./package.json)
+[![Tests](https://img.shields.io/badge/selftest-82%20passed-3fb950.svg)](./scripts/selftest.mjs)
+[![E2E](https://img.shields.io/badge/e2e-49%20passed-3fb950.svg)](./scripts/e2e.mjs)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-ffb454.svg)](./CONTRIBUTING.md)
+
+</div>
 
 ![界面预览](docs/screenshot.png)
 
-内置三套三指手示例，点「载入示例」即可切换：
-
-![示例库](docs/samples.png)
-
-一句话流程：**CAD 里给每个 link 建好坐标系并拿到质量属性 → 网页里上传网格 + 填参数 → 按关节树拼起来 → 导出 zip（robot.urdf / meshes / README）**。
-
-- 仓库路径：`dexhand-urdf-studio/`
-- 技术栈：Vite 5 + React 18 + Three.js 0.169 + JSZip（无后端、无账号）
-- 单位：**m / kg / rad / kg·m²**（面板可切 g、mm、g·mm² 等输入单位，存储与导出永远是 SI）
+| 上手 | 深入 |
+| --- | --- |
+| [1. 这是什么](#1-这是什么) | [9. 导出包与验证](#9-导出包与验证) |
+| [2. 快速开始](#2-快速开始) | [10. 示例数据包](#10-示例数据包) |
+| [3. 演示步骤](#3-演示步骤对应验收) | [11. 已知限制](#11-已知限制) |
+| [4. 界面与交互](#4-界面与交互) | [12. 路线图](#12-路线图) |
+| [5. 功能清单](#5-功能清单) | [13. 目录结构](#13-目录结构) |
+| [6. 数据模型](#6-数据模型) | [14. 参与贡献](#14-参与贡献) |
+| [7. 从 SolidWorks 导出什么](#7-从-solidworks-应该导出什么) | [15. 许可证](#15-许可证) |
+| [8. 质量属性识别](#8-质量属性识别) | |
 
 ---
 
-## 1. 快速开始
+## 1. 这是什么
 
-```bash
-cd dexhand-urdf-studio
-npm install          # 只装了 react / react-dom / three / jszip
-npm run samples      # 生成示例网格与质量属性文本（仓库已带，可跳过）
-npm run dev          # 打开 http://localhost:5173
+结构工程师在 SolidWorks 里做完灵巧手，要把模型变成仿真能用的 URDF，通常得手写 XML：每个 link 贴一遍质量、质心、6 个惯量分量，每个 joint 算一遍 origin 和 rpy，稍不留神单位就错一位。现有工具要么绑定特定 CAD 的插件，要么得装一堆 Python 依赖。
+
+这个工具把这段流程搬到浏览器里：
+
+```
+CAD 里给每个 link 建好坐标系、导出 STL 与质量属性
+        ↓
+网页里上传网格 + 粘贴质量属性（自动识别单位并换算成 SI）
+        ↓
+按关节树拼起来，3D 里实时看姿态，右侧同步出 URDF 文本
+        ↓
+导出 zip：robot.urdf + meshes/ + params.json + check_urdf.py + README
 ```
 
-其他命令：
+一个 zip 解压就能被 `check_urdf`、RViz、MuJoCo、Isaac 直接加载。
+
+**设计上的四个取舍**
+
+| 取舍 | 原因 |
+| --- | --- |
+| 纯静态前端，无后端无账号 | 工程数据是客户的，不该离开本机；也不需要运维 |
+| 不读 `.sldprt`，只吃 STL + 质量属性文本 | 逆向 CAD 格式既不可靠也踩许可证；SolidWorks 自己导出的数值才是权威 |
+| 存储与导出永远是 SI | 只在输入控件边界换算，`1.86e-4 kg·m²` 这类值不会在链路里被整数化 |
+| 所有数值可追溯 | 面板始终显示「来源文件 / 原始单位 / 参考系 / 换算结果」，改错了能看出来 |
+
+### 它不做什么
+
+不做动力学仿真、不做碰撞检测、不做多人协作、不替代 CAD。它只负责「把 CAD 里的零件变成一棵合法的关节树和一份单位正确的 URDF」。
+
+---
+
+## 2. 快速开始
+
+```bash
+git clone https://github.com/your-name/dexhand-urdf-studio.git
+cd dexhand-urdf-studio
+npm ci                 # 运行时只有 react / react-dom / three / jszip
+npm run dev            # http://localhost:5173
+```
+
+打开页面 → 点顶栏 **载入示例** → 任选一套 → 右下 **导出 URDF**，30 秒内能拿到一个可校验的 zip。
+
+> 需要 Node ≥ 18。局域网访问用 `npm run dev -- --host`。
+
+### 命令
 
 | 命令 | 作用 |
 | --- | --- |
+| `npm run dev` | 开发服务器（5173） |
 | `npm run build` | 产出 `dist/` 静态站点（`base: './'`，可放任意子目录） |
-| `npm run preview` | 本地预览构建产物（端口 4173） |
-| `npm run selftest` | 无浏览器的核心逻辑自测（解析 / 惯量 / URDF / 校验 / 打包 / 三个示例，82 项） |
+| `npm run preview` | 预览构建产物（4173） |
+| `npm test` | `selftest` + `verify`，提交前最小自检 |
+| `npm run ci` | 上面两条 + `build`，与 GitHub Actions 一致 |
+| `npm run selftest` | 纯 Node 的核心逻辑断言：解析 / 惯量 / URDF / 校验 / 打包 / 示例，**82 项** |
 | `npm run verify` | 生成 zip → 解压 → 用 `tools/check_urdf.py` 实测（含坏包反例） |
-| `npm run e2e` | 无头 Edge 跑真实交互（需先 `npm run dev`，49 项断言），截图输出到 `shots/` |
-| `node scripts/layout-check.mjs` | 布局体检：1920/1680/1440/1366/1280 五档宽度下检查横向溢出与越界 |
-| `node scripts/shots.mjs` | 分区截图（顶栏 / 左栏 / 右栏 / 抽屉 / 三个弹窗 / 空态），用于视觉走查 |
+| `npm run e2e` | 无头 Chromium 跑真实交互，**49 项**断言，截图落在 `shots/`（需先 `npm run dev`） |
+| `npm run layout` | 1920/1680/1440/1366/1280 五档宽度检查横向溢出与越界 |
+| `npm run samples` | 重新生成示例网格、质量属性文本与示例工程（仓库已带，一般不用跑） |
+| `npm run examples` | 把三套示例导出成 `examples/*.zip` |
 
-> 需要 Node ≥ 18。`npm run dev` 默认监听 localhost；若要局域网访问用 `npm run dev -- --host`。
+`npm run e2e` / `npm run layout` / `npm run shots` 会自动探测本机 Chrome、Edge 或 Chromium；也可用 `E2E_BROWSER=/path/to/chrome` 指定，被测地址用 `E2E_URL` 覆盖。
 
 ---
 
-## 2. 演示步骤（对应验收）
+## 3. 演示步骤（对应验收）
 
-1. `npm run dev`，浏览器打开 `http://localhost:5173`。
+1. `npm run dev`，打开 `http://localhost:5173`。
 2. 点顶栏 **载入示例** → 打开 **示例库**，三选一：
    - **三指灵巧手**：3 指 × 3 关节（10 links / 9 joints）
-   - **Barrett Hand BH8-280**：9 links / 8 joints，运动学与惯性参数取自公开的 barrett_model
+   - **Barrett Hand BH8-280**：9 links / 8 joints，运动学与惯性参数取自公开的 `barrett_model`
    - **单指示例**：4 links / 3 joints，用于对照验收
 
    载入后右上显示 *校验通过*，3D 里能看到坐标系、关节轴（青色箭头）、质心小球（品红）。
@@ -67,29 +121,29 @@ check_urdf robot.urdf                # 有 ROS/urdfdom 时用官方工具
 
 ---
 
-## 3. 界面说明
+## 4. 界面与交互
 
-整体是深色「精密仪器」风格：近黑中性底 + 发丝级分隔线，蓝色只用于动作（主按钮、选中态），
-琥珀色只用于选中物体（3D 里的包围盒），数字统一用等宽字体并开启 tabular-nums，避免跳动。
+整体是深色「精密仪器」风格：近黑中性底 + 发丝级分隔线，蓝色只用于动作（主按钮、选中态），琥珀色只用于选中物体（3D 里的包围盒），数字统一用等宽字体并开启 `tabular-nums`，避免跳动。
+
+内置三套示例，点「载入示例」即可切换：
+
+![示例库](docs/samples.png)
 
 3D 视口做了这几件事，读图比素色 Three.js 场景更接近 CAD 软件：
 
 - **环境反射**（`RoomEnvironment` + PMREM）+ 三点光：零件表面有柔和的高光渐变，而不是纯色平涂。
-- **受光地台 + 实时阴影**：地面用径向 alpha 贴图淡出到背景，阴影相机随模型包围盒自适应，
-  零件"落"在地面上而不是飘着；地面高度自动贴合所有网格的最低点。
-- **技术网格**用 canvas 生成的径向淡出贴图，避免 GridHelper 边缘硬切。
+- **受光地台 + 实时阴影**：地面用径向 alpha 贴图淡出到背景，阴影相机随模型包围盒自适应，零件"落"在地面上而不是飘着；地面高度自动贴合所有网格的最低点。
+- **技术网格**用 canvas 生成的径向淡出贴图，避免 `GridHelper` 边缘硬切。
 - 质心球、关节轴箭头按零件尺寸缩放；选中件用低强度自发光 + 琥珀包围盒，不再是整块发蓝。
 - 空工程时自动收起地面，只留原点坐标轴 + 一行引导文案。
 
 视口右上角有 **视角预设**（等轴 / 前视 / 俯视 / 侧视）：按当前包围盒重新取景，用于核对坐标系与关节轴方向。
 
-面板侧：零件项把文件名、单位、质量识别状态压到一行（4 个零件在 1366×768 下也能一屏看到），
-竖排行（如 joint 的 axis）单独修了标签占位，弹窗统一 13px 圆角 + 分层阴影。
-关节多于一屏时（三指手 9 个、双手 20+），底部关节条自动换行并压缩滑块宽度，不会被裁掉。
+面板侧：零件项把文件名、单位、质量识别状态压到一行（4 个零件在 1366×768 下也能一屏看到），竖排行（如 joint 的 axis）单独修了标签占位，弹窗统一 13px 圆角 + 分层阴影。关节多于一屏时（三指手 9 个、双手 20+），底部关节条自动换行并压缩滑块宽度，不会被裁掉。
 
 ---
 
-## 4. 功能清单
+## 5. 功能清单
 
 | 模块 | 已实现 |
 | --- | --- |
@@ -97,16 +151,16 @@ check_urdf robot.urdf                # 有 ROS/urdfdom 时用官方工具
 | 参数编辑 | mass、质心 xyz、惯量 6 分量；单位下拉（kg/g、m/mm、kg·m²/kg·mm²/g·mm²）；惯量参考系切换（质心 / 输出坐标系） |
 | 质量属性识别 | SolidWorks 质量属性 TXT / CSV / 复制文本（中英文标签）、多文件批量绑定、来源与换算可追溯、缺项高亮、手填兜底 |
 | 拼装 | 建关节（parent/child/type/origin/axis/limit）、改父子、改名、删除、root 切换、成环检测 |
-| 3D | Three.js 视口、OrbitControls、link 坐标轴、关节轴箭头、质心球、选中高亮+包围盒、关节拖动滑块、适应视图、四档视角预设 |
+| 3D | Three.js 视口、OrbitControls、link 坐标轴、关节轴箭头、质心球、选中高亮 + 包围盒、关节拖动滑块、适应视图、四档视角预设 |
 | 示例库 | 三套工程（单指 / 三指对称 / Barrett BH8-280）一键载入，卡片显示拓扑缩略图、连杆数、关节数、总质量与参数来源 |
 | 预览 | 实时 URDF 文本（等宽、可下载）；关节限位按类型输出 |
 | 校验 | 20+ 条规则（错误阻断导出 / 警告 / 提示），条目可点击定位到对象 |
-| 工程 | 保存/打开 JSON（网格以 base64 内嵌，可单文件搬走）；localStorage 自动保存；Ctrl+S 保存 |
+| 工程 | 保存/打开 JSON（网格以 base64 内嵌，可单文件搬走）；localStorage 自动保存；`Ctrl+S` 保存 |
 | 导出 | `robot.urdf` + `meshes/` + `params.json` + `check_urdf.py` + `README.md` |
 
 ---
 
-## 5. 数据模型
+## 6. 数据模型
 
 ### link（零件）
 
@@ -135,9 +189,9 @@ check_urdf robot.urdf                # 有 ROS/urdfdom 时用官方工具
 
 ---
 
-## 6. 从 SolidWorks 应该导出什么
+## 7. 从 SolidWorks 应该导出什么
 
-### 6.1 每个 link 一个零件 + 一个网格
+### 7.1 每个 link 一个零件 + 一个网格
 
 1. **建模规范**：每个零件单独一个 `.sldprt`；把**坐标系原点放在关节转轴中心**，并让转轴对齐 X/Y/Z 之一（这样 joint origin 多数填 0）。若沿用装配体坐标系，就把装配体里的 link 坐标系复制进零件。
 2. **网格**：`文件 > 另存为 > STL`，选项选 **二进制**、**单位 mm**、偏差 0.05 mm、不勾选「不转换」。本项目默认按 mm→m 换算。
@@ -145,9 +199,9 @@ check_urdf robot.urdf                # 有 ROS/urdfdom 时用官方工具
    - 直接 **Ctrl+A 复制窗口文本** → 粘到本工具的「粘贴文本」；或
    - 点「导出」存成 `.txt` / `.csv` → 在「识别质量属性」里多选上传。
 
-### 6.2 建议的参数字段（CSV / JSON）
+### 7.2 建议的参数字段（CSV / JSON）
 
-工具目前支持**逐个零件**导入质量属性（支持一次多文件批量绑定）；若你想先在自己的 Excel 里汇总，建议按下面列名整理（也是后续「批量 CSV 导入」的目标格式，见 backlog）：
+工具目前支持**逐个零件**导入质量属性（支持一次多文件批量绑定）；若想先在自己的 Excel 里汇总，建议按下面列名整理（也是后续「批量 CSV 导入」的目标格式，见路线图）：
 
 `samples/templates/link_params.csv`
 
@@ -161,11 +215,11 @@ f1_proximal,0.011664,0.015,0,0,0.000000629856,0,0,0.000001189728,0,0.00000118972
 - `inertia_frame` 写 `com` 或 `output`；写 `output` 时导出会自动用平行轴定理换算。
 - `mesh_unit` 写 `mm` / `m` / `cm` / `in`，决定 `<mesh scale>`。
 
-对应的 JSON（与工程文件同构）见 `samples/finger_hand.project.json`：`links[]` 每条包含上述字段，`joints[]` 描述关节树。
+对应的 JSON（与工程文件同构）见 `public/samples/finger_hand.project.json`：`links[]` 每条包含上述字段，`joints[]` 描述关节树。
 
 ---
 
-## 7. 质量属性识别（重点）
+## 8. 质量属性识别
 
 支持输入：
 
@@ -195,7 +249,7 @@ f1_proximal,0.011664,0.015,0,0,0.000000629856,0,0,0.000001189728,0,0.00000118972
 
 ---
 
-## 8. 导出包与验证
+## 9. 导出包与验证
 
 ```
 dex_hand_demo_urdf.zip
@@ -233,12 +287,12 @@ ROS 2 / MuJoCo / Isaac 的加载命令见导出包里的 `README.md`（`check_ur
 
 ---
 
-## 9. 示例数据包
+## 10. 示例数据包
 
 页面顶栏「载入示例」打开示例库，三套工程都由 `scripts/gen-samples.mjs` 生成，
 索引在 `public/samples/index.json`（含连杆数、关节数、总质量、来源）。
 
-### 9.1 Barrett Hand BH8-280（三指，真实参数）
+### 10.1 Barrett Hand BH8-280（三指，真实参数）
 
 | 项目 | 来源 / 数值 |
 | --- | --- |
@@ -257,18 +311,18 @@ ROS 2 / MuJoCo / Isaac 的加载命令见导出包里的 `README.md`（`check_ur
 补回姿态。本工具的导出不带 per-link visual offset，所以生成脚本把这 -45° **烘进了网格本身**，
 保证导出后 q=0 时远节与中节共线、外观与原模型一致。
 
-### 9.2 三指灵巧手（对称布局）
+### 10.2 三指灵巧手（对称布局）
 
 3 指 × (外展 + 近端 + 远端) = 9 个转动关节，10 links，总质量 0.427 kg。
 简化几何，质量/质心/惯量由**网格体积积分**得出（密度 1150 kg/m³），
 所以数值和显示的几何自洽，可直接拿来验证「面板数值 = 导出数值」。
 
-### 9.3 单指示例
+### 10.3 单指示例
 
 手掌 + 1 指 3 关节（4 links / 3 joints），方块密度 1200 kg/m³、惯量按长方体解析式计算，
 用于对照验收流程。
 
-### 9.4 文件布局
+### 10.4 文件布局
 
 ```
 public/samples/
@@ -282,6 +336,7 @@ samples/massprops/                # 仓库副本，便于直接拖进识别弹�
 samples/templates/link_params.csv             # 单指示例参数表
 samples/templates/link_params_barrett.csv     # Barrett 参数表
 samples/templates/link_params_three_finger.csv
+examples/*.zip                    # 三套示例的导出成品，可直接解压校验
 ```
 
 Barrett 的四个质量属性文本（`bhand_palm.txt` / `f1_prox_link.txt` / `f1_med_link.txt` /
@@ -291,12 +346,12 @@ Barrett 的四个质量属性文本（`bhand_palm.txt` / `f1_prox_link.txt` / `f
 
 ---
 
-## 10. 已知限制
+## 11. 已知限制
 
 1. **不做动力学**：只做零位几何 + 关节拖动姿态预览，无碰撞检测、无自碰撞、无传动/耦合。
 2. **不读 SolidWorks 源文件**：必须先在 CAD 里导出 STL 与质量属性；也不支持 STEP/GLB。
 3. **PDF 不直接解析**：PDF 请复制文本后粘贴（避免引入 pdf.js 这类重依赖）。
-4. **批量 CSV 一表多零件未实现**：当前是「多文件批量绑定」，格式见第 5.2 节（backlog）。
+4. **批量 CSV 一表多零件未实现**：当前是「多文件批量绑定」，格式见 7.2 节。
 5. **joint origin 不能拖拽对齐**：只能数值输入或用「重合到父级」，没有 transform gizmo。
 6. **DAE 贴图不加载**：几何能显示，材质统一用 link 颜色。
 7. 关节类型只支持 URDF 四类常用类型，未做 `planar` / `floating`。
@@ -304,20 +359,24 @@ Barrett 的四个质量属性文本（`bhand_palm.txt` / `f1_prox_link.txt` / `f
 9. 数值导出不用科学计数法：小数位按量级自适应（<1 的数最多 15 位），极小值（<1e-12）写成 0。
 10. 大装配（>100 links）没有做实例化渲染优化。
 
-## 11. 下一步建议（backlog）
+---
+
+## 12. 路线图
+
+按优先级排列，欢迎认领（在 issue 里说一声即可）：
 
 - **批量 CSV/JSON 导入**：一表多零件 + 一表多关节，导入前做列校验与预览 diff。
-- **STEP → 惯量**：接一个可选后端（FreeCAD/OCP 或 trimesh）从 STEP 自动算质量属性，前端只做调用与确认。
-- **拖拽对齐**：Three.js TransformControls 让 child 直接拖到父关节，回写 origin。
-- **参数化手指模板**：给定节数/尺寸快速生成 link+joint，减少重复劳动。
+- **拖拽对齐**：`TransformControls` 把 child 直接拖到父关节，回写 `origin`。
 - **URDF 反向导入**：接手别人的 URDF 进来改，便于迭代。
+- **STEP → 惯量**：接一个可选后端（FreeCAD/OCP 或 trimesh）从 STEP 自动算质量属性。
 - **碰撞体简化**：凸包 / 胶囊替代原始网格，减小仿真开销。
-- **导出 USD/Isaac 资产**、**mesh 轻量化（Draco/量化）**。
+- **参数化手指模板**：给定节数/尺寸快速生成 link + joint，减少重复劳动。
 - **质量属性解析增强**：多配置（Configuration 切换）、装配体级质量属性拆分。
+- **导出 USD/Isaac 资产**、**mesh 轻量化（Draco/量化）**。
 
 ---
 
-## 12. 目录结构
+## 13. 目录结构
 
 ```
 dexhand-urdf-studio/
@@ -340,15 +399,43 @@ dexhand-urdf-studio/
 │   │   └── fileText.js         # 文本编码识别（UTF-16/GBK）
 │   └── components/             # Viewport / 面板 / 弹窗 / 示例库 / 通用控件
 ├── scripts/
-│   ├── gen-samples.mjs         # 生成示例网格与质量属性文本
+│   ├── gen-samples.mjs         # 生成示例网格、质量属性文本与工程
 │   ├── selftest.mjs            # 82 项核心逻辑断言
 │   ├── verify-export.mjs       # 导出包 + Python 校验器实测
 │   ├── e2e.mjs                 # 无头浏览器交互测试（49 项）
 │   ├── shots.mjs               # 分区截图（面板/弹窗）
-│   ├── shots-samples.mjs       # 示例库与三指示例截图
-│   └── layout-check.mjs        # 五档分辨率溢出体检
+│   ├── shots-samples.mjs       # 示例库与三指/Barrett 截图
+│   ├── layout-check.mjs        # 五档分辨率溢出体检
+│   └── lib/browser.mjs         # Chromium 内核浏览器探测
 ├── tools/check_urdf.py         # 独立校验器（也随导出包分发）
 ├── samples/                    # 示例数据与参数表模板
 ├── public/samples/             # 供页面 fetch 的示例
-└── examples/*.zip              # 三个示例的导出包（可直接解压查看/校验）
+├── examples/*.zip              # 三个示例的导出包
+├── docs/                       # 截图与发布说明
+└── .github/                    # CI、issue / PR 模板
 ```
+
+---
+
+## 14. 参与贡献
+
+欢迎 issue 与 PR。改 `src/core/` 的行为请同步补 `scripts/selftest.mjs` 的断言，提交前跑一遍：
+
+```bash
+npm run ci
+```
+
+细则见 [CONTRIBUTING.md](./CONTRIBUTING.md)，行为准则见 [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md)，
+安全问题请按 [SECURITY.md](./SECURITY.md) 私下报告，变更记录见 [CHANGELOG.md](./CHANGELOG.md)。
+
+如果你想把这个仓库发布成自己的开源项目，照着 [docs/PUBLISHING.md](./docs/PUBLISHING.md) 的清单走即可（替换占位符、加 CI 徽章、开 Pages 演示）。
+
+## 15. 许可证
+
+[MIT](./LICENSE) © dexhand-urdf-studio contributors
+
+### 致谢
+
+- [JHU LCSR `barrett_model`](https://github.com/jhu-lcsr/barrett_model) —— Barrett Hand 的运动学与惯性参数来源（本项目仅引用数值，未转载其网格资产）
+- [three.js](https://threejs.org/)、[Vite](https://vitejs.dev/)、[React](https://react.dev/)、[JSZip](https://stuk.github.io/jszip/)
+- [Contributor Covenant](https://www.contributor-covenant.org) —— 行为准则模板
