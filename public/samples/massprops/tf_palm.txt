@@ -1,0 +1,33 @@
+Mass properties of tf_palm
+Configuration: Default
+Coordinate system: -- default --
+Density = 0.001150 grams/mm^3
+
+Mass = 287.6168 grams
+Volume = 250101.56 cubic millimeters
+Surface area = 0.00 square millimeters
+Center of mass: ( millimeters )
+	X = 18.85
+	Y = -0.00
+	Z = 0.00
+
+Principal axes of inertia and principal moments of inertia: ( grams * square millimeters )
+Taken at the center of mass.
+	Ix = (1.00, 0.00, 0.00)	Px = 211263.7001
+	Iy = (0.00, 1.00, 0.00)	Py = 200219.5921
+	Iz = (0.00, 0.00, 1.00)	Pz = 364014.6744
+
+Moments of inertia: ( grams * square millimeters )
+Taken at the center of mass.
+	Lxx = 211263.7001	Lxy = -0.0000	Lzx = -0.0000
+	Lyy = 200219.5921	Lyz = 0.0000
+	Lzz = 364014.6744
+
+Moments of inertia: ( grams * square millimeters )
+Taken at the output coordinate system.
+	Ixx = 211263.7001
+	Ixy = -0.0000
+	Ixz = -0.0000
+	Iyy = 302427.1488
+	Iyz = 0.0000
+	Izz = 466222.2311

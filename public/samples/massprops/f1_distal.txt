@@ -13,21 +13,21 @@ Center of mass: ( millimeters )
 
 Principal axes of inertia and principal moments of inertia: ( grams * square millimeters )
 Taken at the center of mass.
-	Ix = (1.00, 0.00, 0.00)	Px = 222.75
-	Iy = (0.00, 1.00, 0.00)	Py = 350.95
-	Iz = (0.00, 0.00, 1.00)	Pz = 350.95
+	Ix = (1.00, 0.00, 0.00)	Px = 222.7500
+	Iy = (0.00, 1.00, 0.00)	Py = 350.9550
+	Iz = (0.00, 0.00, 1.00)	Pz = 350.9550
 
 Moments of inertia: ( grams * square millimeters )
 Taken at the center of mass.
-	Lxx = 222.75	Lxy = 0.00	Lzx = 0.00
-	Lyy = 350.95	Lyz = 0.00
-	Lzz = 350.95
+	Lxx = 222.7500	Lxy = 0.0000	Lzx = 0.0000
+	Lyy = 350.9550	Lyz = 0.0000
+	Lzz = 350.9550
 
 Moments of inertia: ( grams * square millimeters )
 Taken at the output coordinate system.
-	Ixx = 222.75
-	Ixy = 0.00
-	Ixz = 0.00
-	Iyy = 351.67
-	Iyz = 0.00
-	Izz = 351.67
+	Ixx = 222.7500
+	Ixy = 0.0000
+	Ixz = 0.0000
+	Iyy = 1069.6950
+	Iyz = 0.0000
+	Izz = 1069.6950

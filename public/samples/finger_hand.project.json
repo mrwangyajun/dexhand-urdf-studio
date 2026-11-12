@@ -2,7 +2,7 @@
   "version": 1,
   "robotName": "dex_hand_demo",
   "createdAt": "2026-11-11T00:00:00.000Z",
-  "updatedAt": "2026-11-11T00:00:00.000Z",
+  "updatedAt": "2026-11-12T00:00:00.000Z",
   "rootId": "link_palm",
   "meshBaseDir": "meshes/",
   "links": [
@@ -141,7 +141,7 @@
         "izz": 3.50955e-7
       },
       "inertiaFrame": "com",
-      "color": "#d8b878",
+      "color": "#c9a061",
       "placeholder": false,
       "massSource": {
         "fileName": "f1_distal.txt",
@@ -157,7 +157,7 @@
   ],
   "joints": [
     {
-      "id": "joint_f1_abd",
+      "id": "joint_f1_joint_abd",
       "name": "f1_joint_abd",
       "type": "revolute",
       "parentId": "link_palm",
@@ -187,7 +187,7 @@
       }
     },
     {
-      "id": "joint_f1_mcp",
+      "id": "joint_f1_joint_mcp",
       "name": "f1_joint_mcp",
       "type": "revolute",
       "parentId": "link_f1_proximal",
@@ -217,7 +217,7 @@
       }
     },
     {
-      "id": "joint_f1_dip",
+      "id": "joint_f1_joint_dip",
       "name": "f1_joint_dip",
       "type": "revolute",
       "parentId": "link_f1_middle",

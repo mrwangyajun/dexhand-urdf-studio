@@ -1,0 +1,33 @@
+Mass properties of f1_med_link
+Configuration: Default
+Coordinate system: -- default --
+Density = 0.001550 grams/mm^3
+
+Mass = 62.1390 grams
+Volume = 40089.68 cubic millimeters
+Surface area = 0.00 square millimeters
+Center of mass: ( millimeters )
+	X = 23.13
+	Y = 0.79
+	Z = 0.53
+
+Principal axes of inertia and principal moments of inertia: ( grams * square millimeters )
+Taken at the center of mass.
+	Ix = (1.00, 0.00, 0.00)	Px = 4872.0000
+	Iy = (0.00, 1.00, 0.00)	Py = 76588.0000
+	Iz = (0.00, 0.00, 1.00)	Pz = 77733.0000
+
+Moments of inertia: ( grams * square millimeters )
+Taken at the center of mass.
+	Lxx = 4872.0000	Lxy = 1710.3000	Lzx = 34.0410
+	Lyy = 76588.0000	Lyz = 23.1330
+	Lzz = 77733.0000
+
+Moments of inertia: ( grams * square millimeters )
+Taken at the output coordinate system.
+	Ixx = 4927.7484
+	Ixy = 579.8515
+	Ixz = -724.8237
+	Iyy = 109858.1147
+	Iyz = -2.6651
+	Izz = 111024.2268

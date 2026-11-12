@@ -1,0 +1,33 @@
+Mass properties of tf_mid
+Configuration: Default
+Coordinate system: -- default --
+Density = 0.001150 grams/mm^3
+
+Mass = 15.0107 grams
+Volume = 13052.78 cubic millimeters
+Surface area = 0.00 square millimeters
+Center of mass: ( millimeters )
+	X = 10.98
+	Y = 0.00
+	Z = -0.00
+
+Principal axes of inertia and principal moments of inertia: ( grams * square millimeters )
+Taken at the center of mass.
+	Ix = (1.00, 0.00, 0.00)	Px = 629.6187
+	Iy = (0.00, 1.00, 0.00)	Py = 2383.6742
+	Iz = (0.00, 0.00, 1.00)	Pz = 2409.5326
+
+Moments of inertia: ( grams * square millimeters )
+Taken at the center of mass.
+	Lxx = 629.6187	Lxy = -0.0000	Lzx = -0.0000
+	Lyy = 2383.6742	Lyz = -0.0000
+	Lzz = 2409.5326
+
+Moments of inertia: ( grams * square millimeters )
+Taken at the output coordinate system.
+	Ixx = 629.6187
+	Ixy = -0.0000
+	Ixz = -0.0000
+	Iyy = 4192.8210
+	Iyz = -0.0000
+	Izz = 4218.6794

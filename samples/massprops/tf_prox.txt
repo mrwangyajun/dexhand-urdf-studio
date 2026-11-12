@@ -1,0 +1,33 @@
+Mass properties of tf_prox
+Configuration: Default
+Coordinate system: -- default --
+Density = 0.001150 grams/mm^3
+
+Mass = 23.6444 grams
+Volume = 20560.31 cubic millimeters
+Surface area = 0.00 square millimeters
+Center of mass: ( millimeters )
+	X = 14.02
+	Y = 0.00
+	Z = -0.00
+
+Principal axes of inertia and principal moments of inertia: ( grams * square millimeters )
+Taken at the center of mass.
+	Ix = (1.00, 0.00, 0.00)	Px = 1298.5596
+	Iy = (0.00, 1.00, 0.00)	Py = 5527.2300
+	Iz = (0.00, 0.00, 1.00)	Pz = 5614.8179
+
+Moments of inertia: ( grams * square millimeters )
+Taken at the center of mass.
+	Lxx = 1298.5596	Lxy = 0.0000	Lzx = -0.0000
+	Lyy = 5527.2300	Lyz = 0.0000
+	Lzz = 5614.8179
+
+Moments of inertia: ( grams * square millimeters )
+Taken at the output coordinate system.
+	Ixx = 1298.5596
+	Ixy = 0.0000
+	Ixz = 0.0000
+	Iyy = 10175.8534
+	Iyz = 0.0000
+	Izz = 10263.4413

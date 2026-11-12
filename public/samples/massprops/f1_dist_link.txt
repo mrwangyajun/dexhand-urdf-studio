@@ -1,0 +1,33 @@
+Mass properties of f1_dist_link
+Configuration: Default
+Coordinate system: -- default --
+Density = 0.001550 grams/mm^3
+
+Mass = 41.3770 grams
+Volume = 26694.84 cubic millimeters
+Surface area = 0.00 square millimeters
+Center of mass: ( millimeters )
+	X = 22.83
+	Y = 1.05
+	Z = 0.42
+
+Principal axes of inertia and principal moments of inertia: ( grams * square millimeters )
+Taken at the center of mass.
+	Ix = (1.00, 0.00, 0.00)	Px = 3158.2000
+	Iy = (0.00, 1.00, 0.00)	Py = 38376.0000
+	Iz = (0.00, 0.00, 1.00)	Pz = 37275.0000
+
+Moments of inertia: ( grams * square millimeters )
+Taken at the center of mass.
+	Lxx = 3158.2000	Lxy = 1430.8000	Lzx = 101.0600
+	Lyy = 38376.0000	Lyz = 0.0000
+	Lzz = 37275.0000
+
+Moments of inertia: ( grams * square millimeters )
+Taken at the output coordinate system.
+	Ixx = 3211.0493
+	Ixy = 439.9985
+	Ixz = -295.8839
+	Iyy = 59939.9247
+	Iyz = -18.2446
+	Izz = 58877.1553

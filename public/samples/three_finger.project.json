@@ -1,0 +1,653 @@
+{
+  "version": 1,
+  "robotName": "three_finger_hand",
+  "createdAt": "2026-11-11T00:00:00.000Z",
+  "updatedAt": "2026-11-12T00:00:00.000Z",
+  "rootId": "link_tf_palm",
+  "meshBaseDir": "meshes/",
+  "note": "三指对称布局，每指 3 关节（外展 / 近端 / 远端），几何为简化件",
+  "links": [
+    {
+      "id": "link_tf_palm",
+      "name": "tf_palm",
+      "mesh": {
+        "fileName": "tf_palm.stl",
+        "unitScale": "mm",
+        "format": "stl",
+        "size": 2884
+      },
+      "mass": 0.287616788,
+      "com": {
+        "x": 0.018851,
+        "y": 0,
+        "z": 0
+      },
+      "inertia": {
+        "ixx": 0.00021126370009,
+        "ixy": 0,
+        "ixz": 0,
+        "iyy": 0.00020021959215,
+        "iyz": 0,
+        "izz": 0.00036401467441
+      },
+      "inertiaFrame": "com",
+      "color": "#6f7b8a",
+      "placeholder": false,
+      "massSource": {
+        "fileName": "tf_palm.txt",
+        "rawUnits": {
+          "mass": "g",
+          "length": "mm",
+          "inertia": "g*mm^2"
+        },
+        "note": "示例数据：由简化网格 + 密度 1150 kg/m³ 积分得出，可用 samples/massprops/*.txt 走一遍识别流程",
+        "parsedAt": "2026-11-11T00:00:00.000Z"
+      }
+    },
+    {
+      "id": "link_tf_f1_prox",
+      "name": "tf_f1_prox",
+      "mesh": {
+        "fileName": "tf_prox.stl",
+        "unitScale": "mm",
+        "format": "stl",
+        "size": 5284
+      },
+      "mass": 0.023644358,
+      "com": {
+        "x": 0.014021627,
+        "y": 0,
+        "z": 0
+      },
+      "inertia": {
+        "ixx": 0.0000012985596,
+        "ixy": 0,
+        "ixz": 0,
+        "iyy": 0.00000552723002,
+        "iyz": 0,
+        "izz": 0.00000561481792
+      },
+      "inertiaFrame": "com",
+      "color": "#4d8fd0",
+      "placeholder": false,
+      "massSource": {
+        "fileName": "tf_prox.txt",
+        "rawUnits": {
+          "mass": "g",
+          "length": "mm",
+          "inertia": "g*mm^2"
+        },
+        "note": "示例数据：由简化网格 + 密度 1150 kg/m³ 积分得出，可用 samples/massprops/*.txt 走一遍识别流程",
+        "parsedAt": "2026-11-11T00:00:00.000Z"
+      }
+    },
+    {
+      "id": "link_tf_f1_mid",
+      "name": "tf_f1_mid",
+      "mesh": {
+        "fileName": "tf_mid.stl",
+        "unitScale": "mm",
+        "format": "stl",
+        "size": 5284
+      },
+      "mass": 0.015010701,
+      "com": {
+        "x": 0.010978333,
+        "y": 0,
+        "z": 0
+      },
+      "inertia": {
+        "ixx": 6.2961869e-7,
+        "ixy": 0,
+        "ixz": 0,
+        "iyy": 0.00000238367415,
+        "iyz": 0,
+        "izz": 0.00000240953262
+      },
+      "inertiaFrame": "com",
+      "color": "#4d8fd0",
+      "placeholder": false,
+      "massSource": {
+        "fileName": "tf_mid.txt",
+        "rawUnits": {
+          "mass": "g",
+          "length": "mm",
+          "inertia": "g*mm^2"
+        },
+        "note": "示例数据：由简化网格 + 密度 1150 kg/m³ 积分得出，可用 samples/massprops/*.txt 走一遍识别流程",
+        "parsedAt": "2026-11-11T00:00:00.000Z"
+      }
+    },
+    {
+      "id": "link_tf_f1_dist",
+      "name": "tf_f1_dist",
+      "mesh": {
+        "fileName": "tf_dist.stl",
+        "unitScale": "mm",
+        "format": "stl",
+        "size": 5284
+      },
+      "mass": 0.007877563,
+      "com": {
+        "x": 0.007601186,
+        "y": 0,
+        "z": 0
+      },
+      "inertia": {
+        "ixx": 2.1701909e-7,
+        "ixy": 0,
+        "ixz": 0,
+        "iyy": 8.0211494e-7,
+        "iyz": 0,
+        "izz": 8.0190342e-7
+      },
+      "inertiaFrame": "com",
+      "color": "#4d8fd0",
+      "placeholder": false,
+      "massSource": {
+        "fileName": "tf_dist.txt",
+        "rawUnits": {
+          "mass": "g",
+          "length": "mm",
+          "inertia": "g*mm^2"
+        },
+        "note": "示例数据：由简化网格 + 密度 1150 kg/m³ 积分得出，可用 samples/massprops/*.txt 走一遍识别流程",
+        "parsedAt": "2026-11-11T00:00:00.000Z"
+      }
+    },
+    {
+      "id": "link_tf_f2_prox",
+      "name": "tf_f2_prox",
+      "mesh": {
+        "fileName": "tf_prox.stl",
+        "unitScale": "mm",
+        "format": "stl",
+        "size": 5284
+      },
+      "mass": 0.023644358,
+      "com": {
+        "x": 0.014021627,
+        "y": 0,
+        "z": 0
+      },
+      "inertia": {
+        "ixx": 0.0000012985596,
+        "ixy": 0,
+        "ixz": 0,
+        "iyy": 0.00000552723002,
+        "iyz": 0,
+        "izz": 0.00000561481792
+      },
+      "inertiaFrame": "com",
+      "color": "#3fae8c",
+      "placeholder": false,
+      "massSource": {
+        "fileName": "tf_prox.txt",
+        "rawUnits": {
+          "mass": "g",
+          "length": "mm",
+          "inertia": "g*mm^2"
+        },
+        "note": "示例数据：由简化网格 + 密度 1150 kg/m³ 积分得出，可用 samples/massprops/*.txt 走一遍识别流程",
+        "parsedAt": "2026-11-11T00:00:00.000Z"
+      }
+    },
+    {
+      "id": "link_tf_f2_mid",
+      "name": "tf_f2_mid",
+      "mesh": {
+        "fileName": "tf_mid.stl",
+        "unitScale": "mm",
+        "format": "stl",
+        "size": 5284
+      },
+      "mass": 0.015010701,
+      "com": {
+        "x": 0.010978333,
+        "y": 0,
+        "z": 0
+      },
+      "inertia": {
+        "ixx": 6.2961869e-7,
+        "ixy": 0,
+        "ixz": 0,
+        "iyy": 0.00000238367415,
+        "iyz": 0,
+        "izz": 0.00000240953262
+      },
+      "inertiaFrame": "com",
+      "color": "#3fae8c",
+      "placeholder": false,
+      "massSource": {
+        "fileName": "tf_mid.txt",
+        "rawUnits": {
+          "mass": "g",
+          "length": "mm",
+          "inertia": "g*mm^2"
+        },
+        "note": "示例数据：由简化网格 + 密度 1150 kg/m³ 积分得出，可用 samples/massprops/*.txt 走一遍识别流程",
+        "parsedAt": "2026-11-11T00:00:00.000Z"
+      }
+    },
+    {
+      "id": "link_tf_f2_dist",
+      "name": "tf_f2_dist",
+      "mesh": {
+        "fileName": "tf_dist.stl",
+        "unitScale": "mm",
+        "format": "stl",
+        "size": 5284
+      },
+      "mass": 0.007877563,
+      "com": {
+        "x": 0.007601186,
+        "y": 0,
+        "z": 0
+      },
+      "inertia": {
+        "ixx": 2.1701909e-7,
+        "ixy": 0,
+        "ixz": 0,
+        "iyy": 8.0211494e-7,
+        "iyz": 0,
+        "izz": 8.0190342e-7
+      },
+      "inertiaFrame": "com",
+      "color": "#3fae8c",
+      "placeholder": false,
+      "massSource": {
+        "fileName": "tf_dist.txt",
+        "rawUnits": {
+          "mass": "g",
+          "length": "mm",
+          "inertia": "g*mm^2"
+        },
+        "note": "示例数据：由简化网格 + 密度 1150 kg/m³ 积分得出，可用 samples/massprops/*.txt 走一遍识别流程",
+        "parsedAt": "2026-11-11T00:00:00.000Z"
+      }
+    },
+    {
+      "id": "link_tf_f3_prox",
+      "name": "tf_f3_prox",
+      "mesh": {
+        "fileName": "tf_prox.stl",
+        "unitScale": "mm",
+        "format": "stl",
+        "size": 5284
+      },
+      "mass": 0.023644358,
+      "com": {
+        "x": 0.014021627,
+        "y": 0,
+        "z": 0
+      },
+      "inertia": {
+        "ixx": 0.0000012985596,
+        "ixy": 0,
+        "ixz": 0,
+        "iyy": 0.00000552723002,
+        "iyz": 0,
+        "izz": 0.00000561481792
+      },
+      "inertiaFrame": "com",
+      "color": "#c99a52",
+      "placeholder": false,
+      "massSource": {
+        "fileName": "tf_prox.txt",
+        "rawUnits": {
+          "mass": "g",
+          "length": "mm",
+          "inertia": "g*mm^2"
+        },
+        "note": "示例数据：由简化网格 + 密度 1150 kg/m³ 积分得出，可用 samples/massprops/*.txt 走一遍识别流程",
+        "parsedAt": "2026-11-11T00:00:00.000Z"
+      }
+    },
+    {
+      "id": "link_tf_f3_mid",
+      "name": "tf_f3_mid",
+      "mesh": {
+        "fileName": "tf_mid.stl",
+        "unitScale": "mm",
+        "format": "stl",
+        "size": 5284
+      },
+      "mass": 0.015010701,
+      "com": {
+        "x": 0.010978333,
+        "y": 0,
+        "z": 0
+      },
+      "inertia": {
+        "ixx": 6.2961869e-7,
+        "ixy": 0,
+        "ixz": 0,
+        "iyy": 0.00000238367415,
+        "iyz": 0,
+        "izz": 0.00000240953262
+      },
+      "inertiaFrame": "com",
+      "color": "#c99a52",
+      "placeholder": false,
+      "massSource": {
+        "fileName": "tf_mid.txt",
+        "rawUnits": {
+          "mass": "g",
+          "length": "mm",
+          "inertia": "g*mm^2"
+        },
+        "note": "示例数据：由简化网格 + 密度 1150 kg/m³ 积分得出，可用 samples/massprops/*.txt 走一遍识别流程",
+        "parsedAt": "2026-11-11T00:00:00.000Z"
+      }
+    },
+    {
+      "id": "link_tf_f3_dist",
+      "name": "tf_f3_dist",
+      "mesh": {
+        "fileName": "tf_dist.stl",
+        "unitScale": "mm",
+        "format": "stl",
+        "size": 5284
+      },
+      "mass": 0.007877563,
+      "com": {
+        "x": 0.007601186,
+        "y": 0,
+        "z": 0
+      },
+      "inertia": {
+        "ixx": 2.1701909e-7,
+        "ixy": 0,
+        "ixz": 0,
+        "iyy": 8.0211494e-7,
+        "iyz": 0,
+        "izz": 8.0190342e-7
+      },
+      "inertiaFrame": "com",
+      "color": "#c99a52",
+      "placeholder": false,
+      "massSource": {
+        "fileName": "tf_dist.txt",
+        "rawUnits": {
+          "mass": "g",
+          "length": "mm",
+          "inertia": "g*mm^2"
+        },
+        "note": "示例数据：由简化网格 + 密度 1150 kg/m³ 积分得出，可用 samples/massprops/*.txt 走一遍识别流程",
+        "parsedAt": "2026-11-11T00:00:00.000Z"
+      }
+    }
+  ],
+  "joints": [
+    {
+      "id": "joint_tf_f1_abd_joint",
+      "name": "tf_f1_abd_joint",
+      "type": "revolute",
+      "parentId": "link_tf_palm",
+      "childId": "link_tf_f1_prox",
+      "origin": {
+        "xyz": {
+          "x": 0.062,
+          "y": -0.036,
+          "z": 0
+        },
+        "rpy": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
+      },
+      "axis": {
+        "x": 0,
+        "y": 0,
+        "z": 1
+      },
+      "limit": {
+        "lower": -0.28,
+        "upper": 0.28,
+        "effort": 3,
+        "velocity": 3
+      }
+    },
+    {
+      "id": "joint_tf_f1_mcp_joint",
+      "name": "tf_f1_mcp_joint",
+      "type": "revolute",
+      "parentId": "link_tf_f1_prox",
+      "childId": "link_tf_f1_mid",
+      "origin": {
+        "xyz": {
+          "x": 0.046,
+          "y": 0,
+          "z": 0
+        },
+        "rpy": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
+      },
+      "axis": {
+        "x": 0,
+        "y": 1,
+        "z": 0
+      },
+      "limit": {
+        "lower": -0.05,
+        "upper": 1.75,
+        "effort": 2.5,
+        "velocity": 4
+      }
+    },
+    {
+      "id": "joint_tf_f1_pip_joint",
+      "name": "tf_f1_pip_joint",
+      "type": "revolute",
+      "parentId": "link_tf_f1_mid",
+      "childId": "link_tf_f1_dist",
+      "origin": {
+        "xyz": {
+          "x": 0.038,
+          "y": 0,
+          "z": 0
+        },
+        "rpy": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
+      },
+      "axis": {
+        "x": 0,
+        "y": 1,
+        "z": 0
+      },
+      "limit": {
+        "lower": -0.05,
+        "upper": 1.6,
+        "effort": 2,
+        "velocity": 4
+      }
+    },
+    {
+      "id": "joint_tf_f2_abd_joint",
+      "name": "tf_f2_abd_joint",
+      "type": "revolute",
+      "parentId": "link_tf_palm",
+      "childId": "link_tf_f2_prox",
+      "origin": {
+        "xyz": {
+          "x": 0.062,
+          "y": 0,
+          "z": 0
+        },
+        "rpy": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
+      },
+      "axis": {
+        "x": 0,
+        "y": 0,
+        "z": 1
+      },
+      "limit": {
+        "lower": -0.28,
+        "upper": 0.28,
+        "effort": 3,
+        "velocity": 3
+      }
+    },
+    {
+      "id": "joint_tf_f2_mcp_joint",
+      "name": "tf_f2_mcp_joint",
+      "type": "revolute",
+      "parentId": "link_tf_f2_prox",
+      "childId": "link_tf_f2_mid",
+      "origin": {
+        "xyz": {
+          "x": 0.046,
+          "y": 0,
+          "z": 0
+        },
+        "rpy": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
+      },
+      "axis": {
+        "x": 0,
+        "y": 1,
+        "z": 0
+      },
+      "limit": {
+        "lower": -0.05,
+        "upper": 1.75,
+        "effort": 2.5,
+        "velocity": 4
+      }
+    },
+    {
+      "id": "joint_tf_f2_pip_joint",
+      "name": "tf_f2_pip_joint",
+      "type": "revolute",
+      "parentId": "link_tf_f2_mid",
+      "childId": "link_tf_f2_dist",
+      "origin": {
+        "xyz": {
+          "x": 0.038,
+          "y": 0,
+          "z": 0
+        },
+        "rpy": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
+      },
+      "axis": {
+        "x": 0,
+        "y": 1,
+        "z": 0
+      },
+      "limit": {
+        "lower": -0.05,
+        "upper": 1.6,
+        "effort": 2,
+        "velocity": 4
+      }
+    },
+    {
+      "id": "joint_tf_f3_abd_joint",
+      "name": "tf_f3_abd_joint",
+      "type": "revolute",
+      "parentId": "link_tf_palm",
+      "childId": "link_tf_f3_prox",
+      "origin": {
+        "xyz": {
+          "x": 0.062,
+          "y": 0.036,
+          "z": 0
+        },
+        "rpy": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
+      },
+      "axis": {
+        "x": 0,
+        "y": 0,
+        "z": 1
+      },
+      "limit": {
+        "lower": -0.28,
+        "upper": 0.28,
+        "effort": 3,
+        "velocity": 3
+      }
+    },
+    {
+      "id": "joint_tf_f3_mcp_joint",
+      "name": "tf_f3_mcp_joint",
+      "type": "revolute",
+      "parentId": "link_tf_f3_prox",
+      "childId": "link_tf_f3_mid",
+      "origin": {
+        "xyz": {
+          "x": 0.046,
+          "y": 0,
+          "z": 0
+        },
+        "rpy": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
+      },
+      "axis": {
+        "x": 0,
+        "y": 1,
+        "z": 0
+      },
+      "limit": {
+        "lower": -0.05,
+        "upper": 1.75,
+        "effort": 2.5,
+        "velocity": 4
+      }
+    },
+    {
+      "id": "joint_tf_f3_pip_joint",
+      "name": "tf_f3_pip_joint",
+      "type": "revolute",
+      "parentId": "link_tf_f3_mid",
+      "childId": "link_tf_f3_dist",
+      "origin": {
+        "xyz": {
+          "x": 0.038,
+          "y": 0,
+          "z": 0
+        },
+        "rpy": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
+      },
+      "axis": {
+        "x": 0,
+        "y": 1,
+        "z": 0
+      },
+      "limit": {
+        "lower": -0.05,
+        "upper": 1.6,
+        "effort": 2,
+        "velocity": 4
+      }
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+Mass properties of f1_prox_link
+Configuration: Default
+Coordinate system: -- default --
+Density = 0.001550 grams/mm^3
+
+Mass = 141.0900 grams
+Volume = 91025.81 cubic millimeters
+Surface area = 0.00 square millimeters
+Center of mass: ( millimeters )
+	X = 23.13
+	Y = 0.79
+	Z = 0.53
+
+Principal axes of inertia and principal moments of inertia: ( grams * square millimeters )
+Taken at the center of mass.
+	Ix = (1.00, 0.00, 0.00)	Px = 4872.0000
+	Iy = (0.00, 1.00, 0.00)	Py = 76588.0000
+	Iz = (0.00, 0.00, 1.00)	Pz = 77733.0000
+
+Moments of inertia: ( grams * square millimeters )
+Taken at the center of mass.
+	Lxx = 4872.0000	Lxy = 1710.3000	Lzx = 34.0410
+	Lyy = 76588.0000	Lyz = 23.1330
+	Lzz = 77733.0000
+
+Moments of inertia: ( grams * square millimeters )
+Taken at the output coordinate system.
+	Ixx = 4998.5797
+	Ixy = -856.4451
+	Ixz = -1689.0028
+	Iyy = 152129.6161
+	Iyz = -35.4429
+	Izz = 153322.5524

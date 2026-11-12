@@ -1,0 +1,53 @@
+{
+  "version": 1,
+  "samples": [
+    {
+      "file": "three_finger.project.json",
+      "name": "三指灵巧手",
+      "subtitle": "3 指 × 3 关节 · 10 连杆",
+      "desc": "对称三指布局，每指外展 + 近端 + 远端 3 个关节。几何为简化件，质量属性由网格体积积分得到，可直接导出仿真用 URDF。",
+      "glyph": "three-finger",
+      "robotName": "three_finger_hand",
+      "links": 10,
+      "joints": 9,
+      "mass": 0.4272,
+      "tags": [
+        "对称布局",
+        "10 连杆 / 9 关节"
+      ],
+      "source": "内置生成几何（密度 1150 kg/m³）"
+    },
+    {
+      "file": "barrett_bh8.project.json",
+      "name": "Barrett Hand BH8-280",
+      "subtitle": "三指 4 自由度 · 9 连杆真实参数",
+      "desc": "工业三指灵巧手。关节类型、origin、轴、限位、质量、质心、惯量全部取自 JHU LCSR 公开的 barrett_model，可直接与 ROS 中的原模型对照。",
+      "glyph": "barrett",
+      "robotName": "barrett_bh8_280",
+      "links": 9,
+      "joints": 8,
+      "mass": 1.0985,
+      "tags": [
+        "真实参数",
+        "9 连杆 / 8 关节"
+      ],
+      "source": "jhu-lcsr/barrett_model（BH8-280）"
+    },
+    {
+      "file": "finger_hand.project.json",
+      "name": "单指示例",
+      "subtitle": "手掌 + 1 指 3 关节 · 4 连杆",
+      "desc": "最小可跑通链路：上传 → 赋参 → 拼装 → 校验 → 导出。适合第一次上手时对照验收。",
+      "glyph": "one-finger",
+      "robotName": "dex_hand_demo",
+      "links": 4,
+      "joints": 3,
+      "mass": 0.301,
+      "tags": [
+        "入门",
+        "4 连杆 / 3 关节"
+      ],
+      "source": "内置生成几何（密度 1200 kg/m³）"
+    }
+  ]
+}

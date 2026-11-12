@@ -1,0 +1,33 @@
+Mass properties of bhand_palm
+Configuration: Default
+Coordinate system: -- default --
+Density = 0.001550 grams/mm^3
+
+Mass = 505.7300 grams
+Volume = 326277.42 cubic millimeters
+Surface area = 0.00 square millimeters
+Center of mass: ( millimeters )
+	X = -0.05
+	Y = 5.04
+	Z = 36.67
+
+Principal axes of inertia and principal moments of inertia: ( grams * square millimeters )
+Taken at the center of mass.
+	Ix = (1.00, 0.00, 0.00)	Px = 38374.0000
+	Iy = (0.00, 1.00, 0.00)	Py = 224050.0000
+	Iz = (0.00, 0.00, 1.00)	Pz = 200450.0000
+
+Moments of inertia: ( grams * square millimeters )
+Taken at the center of mass.
+	Lxx = 38374.0000	Lxy = -56.0400	Lzx = -42034.0000
+	Lyy = 224050.0000	Lyz = 132.8300
+	Lzz = 200450.0000
+
+Moments of inertia: ( grams * square millimeters )
+Taken at the output coordinate system.
+	Ixx = 731323.7874
+	Ixy = 74.2879
+	Ixz = -41086.3557
+	Iyy = 904137.9286
+	Iyz = -93398.3197
+	Izz = 213314.4997

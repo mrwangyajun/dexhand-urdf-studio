@@ -1,0 +1,586 @@
+{
+  "version": 1,
+  "robotName": "barrett_bh8_280",
+  "createdAt": "2026-11-11T00:00:00.000Z",
+  "updatedAt": "2026-11-12T00:00:00.000Z",
+  "rootId": "link_bhand_palm",
+  "meshBaseDir": "meshes/",
+  "note": "Barrett Hand BH8-280：运动学与惯性参数取自 jhu-lcsr/barrett_model 的 hand.urdf.xacro（源自官方 SolidWorks 模型），网格为简化几何",
+  "links": [
+    {
+      "id": "link_bhand_palm",
+      "name": "bhand_palm",
+      "mesh": {
+        "fileName": "bhand_palm.stl",
+        "unitScale": "mm",
+        "format": "stl",
+        "size": 12084
+      },
+      "mass": 0.50573,
+      "com": {
+        "x": -0.000051098,
+        "y": 0.0050433,
+        "z": 0.036671
+      },
+      "inertia": {
+        "ixx": 0.000038374,
+        "ixy": -5.604e-8,
+        "ixz": -0.000042034,
+        "iyy": 0.00022405,
+        "iyz": 1.3283e-7,
+        "izz": 0.00020045
+      },
+      "inertiaFrame": "com",
+      "color": "#6d7681",
+      "placeholder": false,
+      "massSource": {
+        "fileName": "bhand_palm.txt",
+        "rawUnits": {
+          "mass": "g",
+          "length": "mm",
+          "inertia": "g*mm^2"
+        },
+        "note": "来源：jhu-lcsr/barrett_model（Barrett 官方 SolidWorks 模型的质量属性），已换算为 SI",
+        "parsedAt": "2026-11-11T00:00:00.000Z"
+      }
+    },
+    {
+      "id": "link_f1_prox_link",
+      "name": "f1_prox_link",
+      "mesh": {
+        "fileName": "bhand_finger_prox.stl",
+        "unitScale": "mm",
+        "format": "stl",
+        "size": 6684
+      },
+      "mass": 0.14109,
+      "com": {
+        "x": 0.023133,
+        "y": 0.00078642,
+        "z": 0.00052792
+      },
+      "inertia": {
+        "ixx": 0.000004872,
+        "ixy": 0.0000017103,
+        "ixz": 3.4041e-8,
+        "iyy": 0.000076588,
+        "iyz": 2.3133e-8,
+        "izz": 0.000077733
+      },
+      "inertiaFrame": "com",
+      "color": "#5b8fc9",
+      "placeholder": false,
+      "massSource": {
+        "fileName": "f1_prox_link.txt",
+        "rawUnits": {
+          "mass": "g",
+          "length": "mm",
+          "inertia": "g*mm^2"
+        },
+        "note": "来源：jhu-lcsr/barrett_model（Barrett 官方 SolidWorks 模型的质量属性），已换算为 SI",
+        "parsedAt": "2026-11-11T00:00:00.000Z"
+      }
+    },
+    {
+      "id": "link_f1_med_link",
+      "name": "f1_med_link",
+      "mesh": {
+        "fileName": "bhand_finger_med.stl",
+        "unitScale": "mm",
+        "format": "stl",
+        "size": 5284
+      },
+      "mass": 0.062139,
+      "com": {
+        "x": 0.023133,
+        "y": 0.00078642,
+        "z": 0.00052792
+      },
+      "inertia": {
+        "ixx": 0.000004872,
+        "ixy": 0.0000017103,
+        "ixz": 3.4041e-8,
+        "iyy": 0.000076588,
+        "iyz": 2.3133e-8,
+        "izz": 0.000077733
+      },
+      "inertiaFrame": "com",
+      "color": "#5b8fc9",
+      "placeholder": false,
+      "massSource": {
+        "fileName": "f1_med_link.txt",
+        "rawUnits": {
+          "mass": "g",
+          "length": "mm",
+          "inertia": "g*mm^2"
+        },
+        "note": "来源：jhu-lcsr/barrett_model（Barrett 官方 SolidWorks 模型的质量属性），已换算为 SI",
+        "parsedAt": "2026-11-11T00:00:00.000Z"
+      }
+    },
+    {
+      "id": "link_f1_dist_link",
+      "name": "f1_dist_link",
+      "mesh": {
+        "fileName": "bhand_finger_dist.stl",
+        "unitScale": "mm",
+        "format": "stl",
+        "size": 5284
+      },
+      "mass": 0.041377,
+      "com": {
+        "x": 0.022825,
+        "y": 0.0010491,
+        "z": 0.0004203
+      },
+      "inertia": {
+        "ixx": 0.0000031582,
+        "ixy": 0.0000014308,
+        "ixz": 1.0106e-7,
+        "iyy": 0.000038376,
+        "iyz": 0,
+        "izz": 0.000037275
+      },
+      "inertiaFrame": "com",
+      "color": "#5b8fc9",
+      "placeholder": false,
+      "massSource": {
+        "fileName": "f1_dist_link.txt",
+        "rawUnits": {
+          "mass": "g",
+          "length": "mm",
+          "inertia": "g*mm^2"
+        },
+        "note": "来源：jhu-lcsr/barrett_model（Barrett 官方 SolidWorks 模型的质量属性），已换算为 SI",
+        "parsedAt": "2026-11-11T00:00:00.000Z"
+      }
+    },
+    {
+      "id": "link_f2_prox_link",
+      "name": "f2_prox_link",
+      "mesh": {
+        "fileName": "bhand_finger_prox.stl",
+        "unitScale": "mm",
+        "format": "stl",
+        "size": 6684
+      },
+      "mass": 0.14109,
+      "com": {
+        "x": 0.023133,
+        "y": 0.00078642,
+        "z": 0.00052792
+      },
+      "inertia": {
+        "ixx": 0.000004872,
+        "ixy": 0.0000017103,
+        "ixz": 3.4041e-8,
+        "iyy": 0.000076588,
+        "iyz": 2.3133e-8,
+        "izz": 0.000077733
+      },
+      "inertiaFrame": "com",
+      "color": "#4fae92",
+      "placeholder": false,
+      "massSource": {
+        "fileName": "f1_prox_link.txt",
+        "rawUnits": {
+          "mass": "g",
+          "length": "mm",
+          "inertia": "g*mm^2"
+        },
+        "note": "来源：jhu-lcsr/barrett_model（Barrett 官方 SolidWorks 模型的质量属性），已换算为 SI",
+        "parsedAt": "2026-11-11T00:00:00.000Z"
+      }
+    },
+    {
+      "id": "link_f2_med_link",
+      "name": "f2_med_link",
+      "mesh": {
+        "fileName": "bhand_finger_med.stl",
+        "unitScale": "mm",
+        "format": "stl",
+        "size": 5284
+      },
+      "mass": 0.062139,
+      "com": {
+        "x": 0.023133,
+        "y": 0.00078642,
+        "z": 0.00052792
+      },
+      "inertia": {
+        "ixx": 0.000004872,
+        "ixy": 0.0000017103,
+        "ixz": 3.4041e-8,
+        "iyy": 0.000076588,
+        "iyz": 2.3133e-8,
+        "izz": 0.000077733
+      },
+      "inertiaFrame": "com",
+      "color": "#4fae92",
+      "placeholder": false,
+      "massSource": {
+        "fileName": "f1_med_link.txt",
+        "rawUnits": {
+          "mass": "g",
+          "length": "mm",
+          "inertia": "g*mm^2"
+        },
+        "note": "来源：jhu-lcsr/barrett_model（Barrett 官方 SolidWorks 模型的质量属性），已换算为 SI",
+        "parsedAt": "2026-11-11T00:00:00.000Z"
+      }
+    },
+    {
+      "id": "link_f2_dist_link",
+      "name": "f2_dist_link",
+      "mesh": {
+        "fileName": "bhand_finger_dist.stl",
+        "unitScale": "mm",
+        "format": "stl",
+        "size": 5284
+      },
+      "mass": 0.041377,
+      "com": {
+        "x": 0.022825,
+        "y": 0.0010491,
+        "z": 0.0004203
+      },
+      "inertia": {
+        "ixx": 0.0000031582,
+        "ixy": 0.0000014308,
+        "ixz": 1.0106e-7,
+        "iyy": 0.000038376,
+        "iyz": 0,
+        "izz": 0.000037275
+      },
+      "inertiaFrame": "com",
+      "color": "#4fae92",
+      "placeholder": false,
+      "massSource": {
+        "fileName": "f1_dist_link.txt",
+        "rawUnits": {
+          "mass": "g",
+          "length": "mm",
+          "inertia": "g*mm^2"
+        },
+        "note": "来源：jhu-lcsr/barrett_model（Barrett 官方 SolidWorks 模型的质量属性），已换算为 SI",
+        "parsedAt": "2026-11-11T00:00:00.000Z"
+      }
+    },
+    {
+      "id": "link_f3_med_link",
+      "name": "f3_med_link",
+      "mesh": {
+        "fileName": "bhand_finger_med.stl",
+        "unitScale": "mm",
+        "format": "stl",
+        "size": 5284
+      },
+      "mass": 0.062139,
+      "com": {
+        "x": 0.023133,
+        "y": 0.00078642,
+        "z": 0.00052792
+      },
+      "inertia": {
+        "ixx": 0.000004872,
+        "ixy": 0.0000017103,
+        "ixz": 3.4041e-8,
+        "iyy": 0.000076588,
+        "iyz": 2.3133e-8,
+        "izz": 0.000077733
+      },
+      "inertiaFrame": "com",
+      "color": "#c39a57",
+      "placeholder": false,
+      "massSource": {
+        "fileName": "f1_med_link.txt",
+        "rawUnits": {
+          "mass": "g",
+          "length": "mm",
+          "inertia": "g*mm^2"
+        },
+        "note": "来源：jhu-lcsr/barrett_model（Barrett 官方 SolidWorks 模型的质量属性），已换算为 SI",
+        "parsedAt": "2026-11-11T00:00:00.000Z"
+      }
+    },
+    {
+      "id": "link_f3_dist_link",
+      "name": "f3_dist_link",
+      "mesh": {
+        "fileName": "bhand_finger_dist.stl",
+        "unitScale": "mm",
+        "format": "stl",
+        "size": 5284
+      },
+      "mass": 0.041377,
+      "com": {
+        "x": 0.022825,
+        "y": 0.0010491,
+        "z": 0.0004203
+      },
+      "inertia": {
+        "ixx": 0.0000031582,
+        "ixy": 0.0000014308,
+        "ixz": 1.0106e-7,
+        "iyy": 0.000038376,
+        "iyz": 0,
+        "izz": 0.000037275
+      },
+      "inertiaFrame": "com",
+      "color": "#c39a57",
+      "placeholder": false,
+      "massSource": {
+        "fileName": "f1_dist_link.txt",
+        "rawUnits": {
+          "mass": "g",
+          "length": "mm",
+          "inertia": "g*mm^2"
+        },
+        "note": "来源：jhu-lcsr/barrett_model（Barrett 官方 SolidWorks 模型的质量属性），已换算为 SI",
+        "parsedAt": "2026-11-11T00:00:00.000Z"
+      }
+    }
+  ],
+  "joints": [
+    {
+      "id": "joint_f1_prox_joint",
+      "name": "f1_prox_joint",
+      "type": "revolute",
+      "parentId": "link_bhand_palm",
+      "childId": "link_f1_prox_link",
+      "origin": {
+        "xyz": {
+          "x": -0.025,
+          "y": 0,
+          "z": 0.0415
+        },
+        "rpy": {
+          "x": 0,
+          "y": 0,
+          "z": -1.5707963267949
+        }
+      },
+      "axis": {
+        "x": 0,
+        "y": 0,
+        "z": -1
+      },
+      "limit": {
+        "lower": 0,
+        "upper": 3.141592654,
+        "effort": 5,
+        "velocity": 5
+      }
+    },
+    {
+      "id": "joint_f1_med_joint",
+      "name": "f1_med_joint",
+      "type": "revolute",
+      "parentId": "link_f1_prox_link",
+      "childId": "link_f1_med_link",
+      "origin": {
+        "xyz": {
+          "x": 0.05,
+          "y": 0,
+          "z": 0.0339
+        },
+        "rpy": {
+          "x": 1.5707963267949,
+          "y": 0,
+          "z": 0
+        }
+      },
+      "axis": {
+        "x": 0,
+        "y": 0,
+        "z": 1
+      },
+      "limit": {
+        "lower": 0,
+        "upper": 2.443460953,
+        "effort": 5,
+        "velocity": 5
+      }
+    },
+    {
+      "id": "joint_f1_dist_joint",
+      "name": "f1_dist_joint",
+      "type": "revolute",
+      "parentId": "link_f1_med_link",
+      "childId": "link_f1_dist_link",
+      "origin": {
+        "xyz": {
+          "x": 0.06994,
+          "y": 0.003,
+          "z": 0
+        },
+        "rpy": {
+          "x": 0,
+          "y": 0,
+          "z": 0.78539816339745
+        }
+      },
+      "axis": {
+        "x": 0,
+        "y": 0,
+        "z": 1
+      },
+      "limit": {
+        "lower": 0,
+        "upper": 0.837758041,
+        "effort": 5,
+        "velocity": 5
+      }
+    },
+    {
+      "id": "joint_f2_prox_joint",
+      "name": "f2_prox_joint",
+      "type": "revolute",
+      "parentId": "link_bhand_palm",
+      "childId": "link_f2_prox_link",
+      "origin": {
+        "xyz": {
+          "x": 0.025,
+          "y": 0,
+          "z": 0.0415
+        },
+        "rpy": {
+          "x": 0,
+          "y": 0,
+          "z": -1.5707963267949
+        }
+      },
+      "axis": {
+        "x": 0,
+        "y": 0,
+        "z": 1
+      },
+      "limit": {
+        "lower": 0,
+        "upper": 3.141592654,
+        "effort": 5,
+        "velocity": 5
+      }
+    },
+    {
+      "id": "joint_f2_med_joint",
+      "name": "f2_med_joint",
+      "type": "revolute",
+      "parentId": "link_f2_prox_link",
+      "childId": "link_f2_med_link",
+      "origin": {
+        "xyz": {
+          "x": 0.05,
+          "y": 0,
+          "z": 0.0339
+        },
+        "rpy": {
+          "x": 1.5707963267949,
+          "y": 0,
+          "z": 0
+        }
+      },
+      "axis": {
+        "x": 0,
+        "y": 0,
+        "z": 1
+      },
+      "limit": {
+        "lower": 0,
+        "upper": 2.443460953,
+        "effort": 5,
+        "velocity": 5
+      }
+    },
+    {
+      "id": "joint_f2_dist_joint",
+      "name": "f2_dist_joint",
+      "type": "revolute",
+      "parentId": "link_f2_med_link",
+      "childId": "link_f2_dist_link",
+      "origin": {
+        "xyz": {
+          "x": 0.06994,
+          "y": 0.003,
+          "z": 0
+        },
+        "rpy": {
+          "x": 0,
+          "y": 0,
+          "z": 0.78539816339745
+        }
+      },
+      "axis": {
+        "x": 0,
+        "y": 0,
+        "z": 1
+      },
+      "limit": {
+        "lower": 0,
+        "upper": 0.837758041,
+        "effort": 5,
+        "velocity": 5
+      }
+    },
+    {
+      "id": "joint_f3_med_joint",
+      "name": "f3_med_joint",
+      "type": "revolute",
+      "parentId": "link_bhand_palm",
+      "childId": "link_f3_med_link",
+      "origin": {
+        "xyz": {
+          "x": 0,
+          "y": 0.05,
+          "z": 0.0754
+        },
+        "rpy": {
+          "x": 1.5707963267949,
+          "y": 0,
+          "z": 1.5707963267949
+        }
+      },
+      "axis": {
+        "x": 0,
+        "y": 0,
+        "z": 1
+      },
+      "limit": {
+        "lower": 0,
+        "upper": 2.443460953,
+        "effort": 5,
+        "velocity": 5
+      }
+    },
+    {
+      "id": "joint_f3_dist_joint",
+      "name": "f3_dist_joint",
+      "type": "revolute",
+      "parentId": "link_f3_med_link",
+      "childId": "link_f3_dist_link",
+      "origin": {
+        "xyz": {
+          "x": 0.06994,
+          "y": 0.003,
+          "z": 0
+        },
+        "rpy": {
+          "x": 0,
+          "y": 0,
+          "z": 0.78539816339745
+        }
+      },
+      "axis": {
+        "x": 0,
+        "y": 0,
+        "z": 1
+      },
+      "limit": {
+        "lower": 0,
+        "upper": 0.837758041,
+        "effort": 5,
+        "velocity": 5
+      }
+    }
+  ]
+}
