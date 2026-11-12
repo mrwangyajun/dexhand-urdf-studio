@@ -1,0 +1,71 @@
+name: Bug 报告
+description: 报告一个可以复现的问题
+title: '[bug] '
+labels: ['bug', 'needs-triage']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢反馈。请尽量把「能复现的最小输入」附上（一段质量属性文本、一个工程 JSON，或者说明用哪套示例），
+        这样定位会快很多。**请先删掉真实型号、公司与项目名称。**
+  - type: checkboxes
+    id: preflight
+    attributes:
+      label: 提交前确认
+      options:
+        - label: 我已搜索过现有 issue，没有重复
+          required: true
+        - label: 我使用的是最新代码（或说明了我用的 commit）
+          required: true
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: 现象
+      description: 做了什么、期望什么、实际发生了什么
+      placeholder: |
+        1. 载入「三指灵巧手」示例
+        2. 点 f1_joint_mcp，把 effort 改成 0
+        3. 期望校验面板报错并阻止导出，实际 …
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: 涉及模块
+      multiple: true
+      options:
+        - 零件上传 / 网格解析
+        - 质量属性识别
+        - 拼装与关节树
+        - 3D 视口
+        - URDF 预览 / 校验
+        - 导出 zip
+        - 工程保存 / 加载
+        - 示例数据
+        - 其他
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: 版本 / commit
+      placeholder: v0.1.0 或 3d487d9
+  - type: input
+    id: env
+    attributes:
+      label: 运行环境
+      placeholder: Windows 11 · Chrome 131 · Node 20.11
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: 控制台报错 / 截图
+      description: 浏览器 DevTools 的红色报错，或拖入截图
+      render: shell
+  - type: textarea
+    id: sample
+    attributes:
+      label: 复现用输入（可选）
+      description: 质量属性文本、参数表或工程 JSON；请脱敏
+      render: text

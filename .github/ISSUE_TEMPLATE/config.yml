@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 使用问题 / 讨论
+    url: https://github.com/your-name/dexhand-urdf-studio/discussions
+    about: 不确定是不是 bug、想问问怎么用，请到 Discussions
+  - name: 安全漏洞
+    url: https://github.com/your-name/dexhand-urdf-studio/security/advisories/new
+    about: 请勿用公开 issue 报告安全问题，见 SECURITY.md

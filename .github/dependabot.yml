@@ -1,0 +1,22 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: '/'
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: chore
+    groups:
+      # three / react 这类大版本会带动 API 变更，单独成 PR 便于逐个验证
+      dev-dependencies:
+        dependency-type: development
+        update-types: ['minor', 'patch']
+      runtime-minor:
+        dependency-type: production
+        update-types: ['minor', 'patch']
+
+  - package-ecosystem: github-actions
+    directory: '/'
+    schedule:
+      interval: monthly

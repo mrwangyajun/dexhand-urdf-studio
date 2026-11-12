@@ -1,0 +1,53 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    name: 核心逻辑 + 导出校验 + 构建
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node: ['18', '20', '22']
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 配置 Node ${{ matrix.node }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+
+      - name: 安装依赖
+        run: npm ci
+
+      - name: 核心逻辑自测（解析 / 惯量 / URDF / 校验 / 打包 / 示例）
+        run: npm run selftest
+
+      - name: 导出包实测（zip → 解压 → check_urdf.py，含坏包反例）
+        run: npm run verify
+
+      - name: 构建静态站点
+        run: npm run build
+
+      - name: 上传构建产物
+        if: matrix.node == '20'
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist
+          retention-days: 7
