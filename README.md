@@ -5,6 +5,10 @@
 
 ![界面预览](docs/screenshot.png)
 
+内置三套三指手示例，点「载入示例」即可切换：
+
+![示例库](docs/samples.png)
+
 一句话流程：**CAD 里给每个 link 建好坐标系并拿到质量属性 → 网页里上传网格 + 填参数 → 按关节树拼起来 → 导出 zip（robot.urdf / meshes / README）**。
 
 - 仓库路径：`dexhand-urdf-studio/`
@@ -28,9 +32,9 @@ npm run dev          # 打开 http://localhost:5173
 | --- | --- |
 | `npm run build` | 产出 `dist/` 静态站点（`base: './'`，可放任意子目录） |
 | `npm run preview` | 本地预览构建产物（端口 4173） |
-| `npm run selftest` | 无浏览器的核心逻辑自测（解析 / 惯量 / URDF / 校验 / 打包，64 项） |
+| `npm run selftest` | 无浏览器的核心逻辑自测（解析 / 惯量 / URDF / 校验 / 打包 / 三个示例，82 项） |
 | `npm run verify` | 生成 zip → 解压 → 用 `tools/check_urdf.py` 实测（含坏包反例） |
-| `npm run e2e` | 无头 Edge 跑真实交互（需先 `npm run dev`，34 项断言），截图输出到 `shots/` |
+| `npm run e2e` | 无头 Edge 跑真实交互（需先 `npm run dev`，49 项断言），截图输出到 `shots/` |
 | `node scripts/layout-check.mjs` | 布局体检：1920/1680/1440/1366/1280 五档宽度下检查横向溢出与越界 |
 | `node scripts/shots.mjs` | 分区截图（顶栏 / 左栏 / 右栏 / 抽屉 / 三个弹窗 / 空态），用于视觉走查 |
 
@@ -41,7 +45,12 @@ npm run dev          # 打开 http://localhost:5173
 ## 2. 演示步骤（对应验收）
 
 1. `npm run dev`，浏览器打开 `http://localhost:5173`。
-2. 点顶栏 **载入示例**：得到「手掌 + 1 指 3 关节」（4 links / 3 joints），右上显示 *校验通过*，3D 里能看到坐标系、关节轴（青色箭头）、质心小球（品红）。
+2. 点顶栏 **载入示例** → 打开 **示例库**，三选一：
+   - **三指灵巧手**：3 指 × 3 关节（10 links / 9 joints）
+   - **Barrett Hand BH8-280**：9 links / 8 joints，运动学与惯性参数取自公开的 barrett_model
+   - **单指示例**：4 links / 3 joints，用于对照验收
+
+   载入后右上显示 *校验通过*，3D 里能看到坐标系、关节轴（青色箭头）、质心小球（品红）。
 3. 点左侧 `f1_proximal`：右侧面板显示网格、质量来源（`f1_proximal.txt`、原始单位 g / mm / g·mm²）、换算后的 kg / m / kg·m²。
 4. 点零件行的 **⚖** 图标打开「识别质量属性」：把 `samples/massprops/palm.txt` 内容粘进去 → 自动识别为 0.2754 kg、质心 (0.025, 0, 0)、惯量 1.86e-4 kg·m² → 选绑定 link → **应用**。
 5. 点装配树的 `f1_joint_mcp`：改 `effort` 7.5、改 `origin` 或 `axis`，下方 **URDF 预览** 与 3D 立即同步；底部滑块可拖动关节看姿态。
@@ -72,8 +81,11 @@ check_urdf robot.urdf                # 有 ROS/urdfdom 时用官方工具
 - 质心球、关节轴箭头按零件尺寸缩放；选中件用低强度自发光 + 琥珀包围盒，不再是整块发蓝。
 - 空工程时自动收起地面，只留原点坐标轴 + 一行引导文案。
 
+视口右上角有 **视角预设**（等轴 / 前视 / 俯视 / 侧视）：按当前包围盒重新取景，用于核对坐标系与关节轴方向。
+
 面板侧：零件项把文件名、单位、质量识别状态压到一行（4 个零件在 1366×768 下也能一屏看到），
 竖排行（如 joint 的 axis）单独修了标签占位，弹窗统一 13px 圆角 + 分层阴影。
+关节多于一屏时（三指手 9 个、双手 20+），底部关节条自动换行并压缩滑块宽度，不会被裁掉。
 
 ---
 
@@ -85,7 +97,8 @@ check_urdf robot.urdf                # 有 ROS/urdfdom 时用官方工具
 | 参数编辑 | mass、质心 xyz、惯量 6 分量；单位下拉（kg/g、m/mm、kg·m²/kg·mm²/g·mm²）；惯量参考系切换（质心 / 输出坐标系） |
 | 质量属性识别 | SolidWorks 质量属性 TXT / CSV / 复制文本（中英文标签）、多文件批量绑定、来源与换算可追溯、缺项高亮、手填兜底 |
 | 拼装 | 建关节（parent/child/type/origin/axis/limit）、改父子、改名、删除、root 切换、成环检测 |
-| 3D | Three.js 视口、OrbitControls、link 坐标轴、关节轴箭头、质心球、选中高亮+包围盒、关节拖动滑块、适应视图 |
+| 3D | Three.js 视口、OrbitControls、link 坐标轴、关节轴箭头、质心球、选中高亮+包围盒、关节拖动滑块、适应视图、四档视角预设 |
+| 示例库 | 三套工程（单指 / 三指对称 / Barrett BH8-280）一键载入，卡片显示拓扑缩略图、连杆数、关节数、总质量与参数来源 |
 | 预览 | 实时 URDF 文本（等宽、可下载）；关节限位按类型输出 |
 | 校验 | 20+ 条规则（错误阻断导出 / 警告 / 提示），条目可点击定位到对象 |
 | 工程 | 保存/打开 JSON（网格以 base64 内嵌，可单文件搬走）；localStorage 自动保存；Ctrl+S 保存 |
@@ -222,19 +235,59 @@ ROS 2 / MuJoCo / Isaac 的加载命令见导出包里的 `README.md`（`check_ur
 
 ## 9. 示例数据包
 
+页面顶栏「载入示例」打开示例库，三套工程都由 `scripts/gen-samples.mjs` 生成，
+索引在 `public/samples/index.json`（含连杆数、关节数、总质量、来源）。
+
+### 9.1 Barrett Hand BH8-280（三指，真实参数）
+
+| 项目 | 来源 / 数值 |
+| --- | --- |
+| 运动学 | `jhu-lcsr/barrett_model` 的 `models/hand.urdf.xacro`（源自 Barrett 官方 SolidWorks 模型） |
+| 拓扑 | palm + f1/f2（各 prox→med→dist）+ f3（med→dist），共 9 links / 8 joints |
+| 关节限位 | prox 0…180°、med 0…140°、dist 0…48°；effort 5 N·m、velocity 5 rad/s |
+| 质量 | palm 0.50573 / prox 0.14109 / med 0.062139 / dist 0.041377 kg（合计 1.0985 kg） |
+| 质心与惯量 | 与上游 URDF 逐位一致（含非对角项，如 palm 的 `ixz = -4.2034e-05`） |
+
+**网格是等比简化几何，不是上游 STL**：上游仓库未声明许可证，因此这里按各连杆包围盒
+（palm 89×110×90、prox 65 mm、med 78 mm、dist 46 mm）重新生成八棱柱/圆柱近似件，
+只用于读图与拼装演示。要换成真实外形，把 SolidWorks 导出的 STL 拖进对应零件行替换即可，
+质量属性不会丢。
+
+一处需要说明的细节：原模型 dist 关节的 `rpy=(0,0,45°)`，其网格靠 `<visual><origin rpy="-45°">`
+补回姿态。本工具的导出不带 per-link visual offset，所以生成脚本把这 -45° **烘进了网格本身**，
+保证导出后 q=0 时远节与中节共线、外观与原模型一致。
+
+### 9.2 三指灵巧手（对称布局）
+
+3 指 × (外展 + 近端 + 远端) = 9 个转动关节，10 links，总质量 0.427 kg。
+简化几何，质量/质心/惯量由**网格体积积分**得出（密度 1150 kg/m³），
+所以数值和显示的几何自洽，可直接拿来验证「面板数值 = 导出数值」。
+
+### 9.3 单指示例
+
+手掌 + 1 指 3 关节（4 links / 3 joints），方块密度 1200 kg/m³、惯量按长方体解析式计算，
+用于对照验收流程。
+
+### 9.4 文件布局
+
 ```
 public/samples/
-├── finger_hand.project.json      # 工程文件（SI 参数，meshBaseDir: meshes/）
-├── meshes/palm.stl               # 90×85×30 mm 方块，mm 单位
-├── meshes/f1_proximal.stl        # 30 mm
-├── meshes/f1_middle.stl          # 26 mm
-├── meshes/f1_distal.stl          # 22 mm
+├── index.json                    # 示例库索引（页面读取）
+├── three_finger.project.json     # 三指灵巧手
+├── barrett_bh8.project.json      # Barrett Hand BH8-280
+├── finger_hand.project.json      # 单指示例
+├── meshes/*.stl                  # 全部网格，单位 mm（模拟 SolidWorks 导出）
 └── massprops/*.txt|csv           # 模拟 SolidWorks 质量属性导出（g / mm）
-samples/massprops/                # 同上的仓库副本，便于直接拖进弹窗
-samples/templates/link_params.csv # 参数表模板
+samples/massprops/                # 仓库副本，便于直接拖进识别弹窗
+samples/templates/link_params.csv             # 单指示例参数表
+samples/templates/link_params_barrett.csv     # Barrett 参数表
+samples/templates/link_params_three_finger.csv
 ```
 
-示例由 `scripts/gen-samples.mjs` 生成：方块密度 1200 kg/m³，惯量按长方体解析式计算，`f1_joint_abd / f1_joint_mcp / f1_joint_dip` 三个转动关节串成 1 指。
+Barrett 的四个质量属性文本（`bhand_palm.txt` / `f1_prox_link.txt` / `f1_med_link.txt` /
+`f1_dist_link.txt`）是真实 CAD 数值按 g / mm / g·mm² 写成的 SolidWorks 报告格式，
+可以直接拖进「识别质量属性」验证解析链路：质量 0.50573 kg、质心 (-0.051098, 5.0433, 36.671) mm
+这类非整数质心都能原样还原。
 
 ---
 
@@ -285,14 +338,17 @@ dexhand-urdf-studio/
 │   │   ├── exportZip.js        # zip 打包
 │   │   ├── artifacts.js        # 导出包 README + check_urdf.py 源码
 │   │   └── fileText.js         # 文本编码识别（UTF-16/GBK）
-│   └── components/             # Viewport / 面板 / 弹窗 / 通用控件
+│   └── components/             # Viewport / 面板 / 弹窗 / 示例库 / 通用控件
 ├── scripts/
 │   ├── gen-samples.mjs         # 生成示例网格与质量属性文本
-│   ├── selftest.mjs            # 64 项核心逻辑断言
+│   ├── selftest.mjs            # 82 项核心逻辑断言
 │   ├── verify-export.mjs       # 导出包 + Python 校验器实测
-│   └── e2e.mjs                 # 无头浏览器交互测试（34 项）
+│   ├── e2e.mjs                 # 无头浏览器交互测试（49 项）
+│   ├── shots.mjs               # 分区截图（面板/弹窗）
+│   ├── shots-samples.mjs       # 示例库与三指示例截图
+│   └── layout-check.mjs        # 五档分辨率溢出体检
 ├── tools/check_urdf.py         # 独立校验器（也随导出包分发）
 ├── samples/                    # 示例数据与参数表模板
 ├── public/samples/             # 供页面 fetch 的示例
-└── examples/dex_hand_demo_urdf.zip  # 示例导出包（可直接解压查看/校验）
+└── examples/*.zip              # 三个示例的导出包（可直接解压查看/校验）
 ```
