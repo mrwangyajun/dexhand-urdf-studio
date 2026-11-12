@@ -1057,6 +1057,30 @@ code {
   overflow-x: auto;
   flex: 0 0 auto;
   min-height: 36px;
+  flex-wrap: wrap;
+  row-gap: 4px;
+}
+
+/* 关节多时（三指手 9 个、双手 20+）自动换行并压缩控件，避免被裁掉 */
+.jointbar.compact {
+  gap: 8px;
+  max-height: 136px;
+  overflow-y: auto;
+}
+.jointbar.compact .jb-item {
+  gap: 6px;
+}
+.jointbar.compact .jb-name {
+  max-width: 96px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.jointbar.compact .jb-item input[type='range'] {
+  width: 58px;
+}
+.jointbar.compact .jb-item .numfield {
+  width: 58px;
 }
 .jb-item {
   display: flex;
@@ -2289,6 +2313,187 @@ pre.code {
 }
 ::-webkit-scrollbar-corner {
   background: transparent;
+}
+
+/* 视角预设：分段按钮 */
+.view-presets {
+  display: flex;
+  gap: 1px;
+  padding: 1px;
+  border-radius: 5px;
+  background: #0b0e12;
+  border: 1px solid var(--line);
+}
+.view-presets button {
+  height: 20px;
+  padding: 0 8px;
+  font-size: 10.5px;
+  border: none;
+  border-radius: 4px;
+  background: none;
+  box-shadow: none;
+  color: #7d8b99;
+}
+.view-presets button:hover:not(:disabled) {
+  background: #1a2129;
+  color: #cfdae6;
+}
+.view-presets button.on {
+  background: #22303f;
+  color: #eaf2fb;
+}
+
+/* ============================================================
+   示例库
+   ============================================================ */
+.gallery-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.gallery-empty {
+  padding: 26px 8px;
+  text-align: center;
+  font-size: 11.5px;
+  line-height: 1.8;
+  color: var(--text-3);
+}
+
+.sample-card {
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  padding: 12px 14px;
+  text-align: left;
+  background: linear-gradient(180deg, #141a21, #10151a);
+  border: 1px solid var(--line-2);
+  border-radius: var(--r3);
+  box-shadow: none;
+  cursor: pointer;
+  white-space: normal; /* 按钮默认 nowrap，卡片里的说明文字需要换行 */
+  transition: border-color 0.14s, background 0.14s, transform 0.14s;
+}
+.sample-card:hover:not(:disabled) {
+  border-color: #3a5a86;
+  background: linear-gradient(180deg, #16202c, #111821);
+  transform: translateY(-1px);
+}
+.sample-card:disabled {
+  opacity: 0.55;
+  cursor: progress;
+}
+
+.sc-glyph {
+  display: grid;
+  place-items: center;
+  width: 96px;
+  height: 66px;
+  border-radius: var(--r2);
+  background: radial-gradient(120% 120% at 30% 20%, #1b232c, #0c1015 70%);
+  border: 1px solid var(--line);
+}
+.sc-glyph svg {
+  width: 88px;
+  height: 64px;
+}
+
+.sc-body {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+.sc-head {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.sc-head b {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -0.01em;
+}
+.sc-sub {
+  font-size: 10.5px;
+  color: var(--text-3);
+  font-family: var(--mono);
+}
+.sc-desc {
+  font-size: 11.5px;
+  line-height: 1.55;
+  color: var(--text-2);
+}
+.sc-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 2px;
+}
+.sc-tag {
+  font-size: 9.5px;
+  padding: 1px 6px;
+  border-radius: 999px;
+  color: #9fc2ee;
+  background: rgba(79, 143, 247, 0.12);
+  border: 1px solid rgba(79, 143, 247, 0.22);
+}
+.sc-src {
+  font-size: 9.5px;
+  color: #5f6b78;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+}
+
+.sc-stats {
+  display: grid;
+  grid-auto-flow: row;
+  gap: 2px;
+  justify-items: end;
+  font-size: 10px;
+  color: var(--text-3);
+  font-family: var(--mono);
+  flex: 0 0 auto;
+}
+.sc-stats b {
+  color: #cfdae6;
+  font-weight: 600;
+}
+.sc-go {
+  margin-top: 6px;
+  font-family: var(--sans);
+  font-size: 11px;
+  color: var(--accent-2);
+  opacity: 0.85;
+}
+.sample-card:hover:not(:disabled) .sc-go {
+  opacity: 1;
+}
+
+/* 空视口的「打开示例库」 */
+.ve-btn {
+  pointer-events: auto;
+  margin-top: 12px;
+  height: 28px;
+  padding: 0 14px;
+  font-size: 11.5px;
+  color: #cfe0f5;
+  background: rgba(79, 143, 247, 0.12);
+  border: 1px solid rgba(79, 143, 247, 0.3);
+  border-radius: 999px;
+  box-shadow: none;
+}
+.ve-btn:hover {
+  background: rgba(79, 143, 247, 0.2);
+  border-color: var(--accent);
+  color: #fff;
 }
 
 /* 矮屏（1366×768 之类）：压缩拖放区与抽屉，保证列表和 3D 都有空间 */

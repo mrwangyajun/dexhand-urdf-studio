@@ -62,6 +62,14 @@ function makeGridTexture() {
   return tex
 }
 
+/** 视角预设的相机方向（Z 轴向上的工作坐标系） */
+const VIEW_DIRS = {
+  iso: [0.9, -1.02, 0.6],
+  front: [0.02, -1, 0.12],
+  top: [0.02, -0.10, 1],
+  side: [1, -0.06, 0.12]
+}
+
 /** 径向淡出的 alpha 贴图：让地台边缘融进背景，不出现硬边 */
 function makeRadialAlphaTexture() {
   const size = 512
@@ -126,7 +134,7 @@ async function loadMeshObject(link) {
   throw new Error(`暂不支持 .${ext} 预览（支持 stl / obj / dae）`)
 }
 
-export default function Viewport({ project, selection, onSelect, jointValues, options, fitSignal }) {
+export default function Viewport({ project, selection, onSelect, jointValues, options, fitSignal, viewPreset, onOpenSamples }) {
   const hostRef = useRef(null)
   const S = useRef({})
   const projectRef = useRef(project)
@@ -363,6 +371,12 @@ export default function Viewport({ project, selection, onSelect, jointValues, op
   useEffect(() => {
     if (fitSignal && S.current) fitView(S.current)
   }, [fitSignal])
+
+  // 视角预设（等轴 / 前 / 俯 / 侧）：只改相机方向，重新按包围盒取景
+  useEffect(() => {
+    if (viewPreset?.n && S.current) fitView(S.current, viewPreset.id)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [viewPreset?.n])
 
   // ---------- 场景同步 ----------
   function syncScene(st) {
@@ -616,7 +630,7 @@ export default function Viewport({ project, selection, onSelect, jointValues, op
     key.shadow.needsUpdate = true
   }
 
-  function fitView(st) {
+  function fitView(st, dirKey = 'iso') {
     const box = new THREE.Box3()
     let has = false
     for (const rec of st.linkObjs.values()) {
@@ -629,8 +643,10 @@ export default function Viewport({ project, selection, onSelect, jointValues, op
     if (!has) box.set(new THREE.Vector3(-0.08, -0.08, -0.08), new THREE.Vector3(0.08, 0.08, 0.08))
     const sphere = box.getBoundingSphere(new THREE.Sphere())
     const radius = Math.max(sphere.radius, 0.02)
-    const dist = (radius / Math.sin(THREE.MathUtils.degToRad(st.camera.fov / 2))) * 1.1
-    const dir = new THREE.Vector3(0.9, -1.02, 0.6).normalize()
+    const dist = (radius / Math.sin(THREE.MathUtils.degToRad(st.camera.fov / 2))) * 1.18
+    const d = VIEW_DIRS[dirKey] || VIEW_DIRS.iso
+    const dir = new THREE.Vector3(d[0], d[1], d[2]).normalize()
+    st.viewDir = dirKey
     st.controls.target.copy(sphere.center)
     st.camera.position.copy(sphere.center).add(dir.multiplyScalar(dist))
     st.camera.near = Math.max(dist / 5000, 1e-4)
@@ -669,7 +685,12 @@ export default function Viewport({ project, selection, onSelect, jointValues, op
       {!project.links.length ? (
         <div className="viewport-empty">
           <div className="ve-title">还没有零件</div>
-          <div className="ve-sub">从左栏上传 STL / OBJ / DAE，或点右上角「载入示例」</div>
+          <div className="ve-sub">
+            从左栏拖入 STL / OBJ / DAE，或先看一个现成的三指灵巧手
+          </div>
+          <button className="ve-btn" onClick={onOpenSamples}>
+            打开示例库
+          </button>
         </div>
       ) : null}
       <div className="viewport-legend">

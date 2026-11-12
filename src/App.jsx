@@ -7,6 +7,7 @@ import JointPanel from './components/JointPanel.jsx'
 import JointDialog from './components/JointDialog.jsx'
 import MassImportDialog from './components/MassImportDialog.jsx'
 import ExportDialog from './components/ExportDialog.jsx'
+import SampleGallery from './components/SampleGallery.jsx'
 import Drawer from './components/Drawer.jsx'
 import { Badge, NumField, Toggle, useToast } from './components/ui.jsx'
 import {
@@ -56,6 +57,9 @@ export default function App() {
   const [drawerOpen, setDrawerOpen] = useState(true)
   const [fitSignal, setFitSignal] = useState(0)
   const [busy, setBusy] = useState(false)
+  const [gallery, setGallery] = useState(false)
+  const [viewPreset, setViewPreset] = useState({ id: 'iso', n: 0 })
+  const [sampleBusy, setSampleBusy] = useState('')
   const [toastNode, toast] = useToast()
   const fileRef = useRef(null)
 
@@ -265,31 +269,40 @@ export default function App() {
     }
   }
 
-  const loadSample = async () => {
+  /** 载入示例工程：读 project.json，再把同名 meshes 打进内存 */
+  const loadSample = async (file = 'finger_hand.project.json') => {
+    setSampleBusy(file)
     try {
       const base = `${import.meta.env.BASE_URL}samples/`
-      const res = await fetch(`${base}finger_hand.project.json`)
+      const res = await fetch(`${base}${file}`)
       if (!res.ok) throw new Error('找不到示例工程，请先运行 npm run samples')
       const json = await res.json()
       const dir = json.meshBaseDir || 'meshes/'
+      const cache = new Map()
       for (const l of json.links) {
-        if (l.mesh?.fileName && !l.mesh.dataBase64) {
+        if (!l.mesh?.fileName || l.mesh.dataBase64) continue
+        if (!cache.has(l.mesh.fileName)) {
           const r = await fetch(`${base}${dir}${l.mesh.fileName}`)
-          if (!r.ok) continue
-          const buf = await r.arrayBuffer()
-          l.mesh.dataBase64 = arrayBufferToBase64(buf)
-          l.mesh.size = buf.byteLength
-          l.mesh.format = 'stl'
+          cache.set(l.mesh.fileName, r.ok ? await r.arrayBuffer() : null)
         }
+        const buf = cache.get(l.mesh.fileName)
+        if (!buf) continue
+        l.mesh.dataBase64 = arrayBufferToBase64(buf)
+        l.mesh.size = buf.byteLength
+        l.mesh.format = 'stl'
       }
       const p = normalizeProject(json)
+      if (!p.links.length) throw new Error('示例里没有零件')
       setProject(p)
       setJointValues({})
       setSelection({ type: 'link', id: p.rootId || p.links[0]?.id })
       setFitSignal((n) => n + 1)
-      toast('已载入示例：手掌 + 1 指 3 关节')
+      setGallery(false)
+      toast(`已载入示例：${p.robotName}（${p.links.length} links / ${p.joints.length} joints）`)
     } catch (e) {
       toast(`示例载入失败：${e.message}`, 'err')
+    } finally {
+      setSampleBusy('')
     }
   }
 
@@ -356,7 +369,7 @@ export default function App() {
 
         <div className="tb-group">
           <button onClick={newProject}>新建</button>
-          <button onClick={loadSample} title="手掌 + 1 指 3 关节示例">
+          <button onClick={() => setGallery(true)} title="三指灵巧手 / Barrett Hand / 单指示例">
             载入示例
           </button>
           <button onClick={() => fileRef.current?.click()}>打开工程</button>
@@ -442,6 +455,23 @@ export default function App() {
               label="关节轴"
             />
             <div className="spacer" />
+            <div className="view-presets" role="group" aria-label="视角预设">
+              {[
+                ['iso', '等轴'],
+                ['front', '前视'],
+                ['top', '俯视'],
+                ['side', '侧视']
+              ].map(([id, label]) => (
+                <button
+                  key={id}
+                  className={viewPreset.id === id ? 'on' : ''}
+                  onClick={() => setViewPreset({ id, n: (viewPreset.n || 0) + 1 })}
+                  title={`切换到${label}`}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
             <span className="muted small">
               {project.links.length} links / {project.joints.length} joints
               {tree.unreachable.length ? <span className="text-err"> · {tree.unreachable.length} 悬空</span> : null}
@@ -455,10 +485,12 @@ export default function App() {
             jointValues={jointValues}
             options={options}
             fitSignal={fitSignal}
+            viewPreset={viewPreset}
+            onOpenSamples={() => setGallery(true)}
           />
 
           {movableJoints.length ? (
-            <div className="jointbar">
+            <div className={`jointbar ${movableJoints.length > 6 ? 'compact' : ''}`}>
               {movableJoints.map((j) => {
                 const q = jointValues[j.id] ?? 0
                 const isPrismatic = j.type === 'prismatic'
@@ -547,8 +579,8 @@ export default function App() {
                   选中第一个零件
                 </button>
               ) : (
-                <button className="mini primary" onClick={loadSample}>
-                  载入示例工程
+                <button className="mini primary" onClick={() => setGallery(true)}>
+                  打开示例库
                 </button>
               )}
             </div>
@@ -607,6 +639,8 @@ export default function App() {
           busy={busy}
         />
       ) : null}
+
+      {gallery ? <SampleGallery onClose={() => setGallery(false)} onPick={loadSample} busyFile={sampleBusy} /> : null}
 
       {toastNode}
     </div>
