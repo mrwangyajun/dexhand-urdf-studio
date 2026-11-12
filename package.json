@@ -2,8 +2,32 @@
   "name": "dexhand-urdf-studio",
   "private": true,
   "version": "0.1.0",
-  "description": "分件赋参 -> 在线拼装 -> 导出完整 URDF 的纯前端工具（灵巧手结构工程师用）",
+  "description": "浏览器里分件赋参、在线拼装、一键导出灵巧手 URDF（纯前端，无后端）",
   "type": "module",
+  "license": "MIT",
+  "author": "dexhand-urdf-studio contributors",
+  "keywords": [
+    "urdf",
+    "robotics",
+    "dexterous-hand",
+    "threejs",
+    "solidworks",
+    "ros2",
+    "inertia",
+    "mass-properties",
+    "cad"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/your-name/dexhand-urdf-studio.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-name/dexhand-urdf-studio/issues"
+  },
+  "homepage": "https://github.com/your-name/dexhand-urdf-studio#readme",
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -12,8 +36,11 @@
     "selftest": "node scripts/selftest.mjs",
     "verify": "node scripts/verify-export.mjs",
     "e2e": "node scripts/e2e.mjs",
+    "layout": "node scripts/layout-check.mjs",
     "examples": "node scripts/make-examples.mjs",
-    "shots": "node scripts/shots.mjs"
+    "shots": "node scripts/shots.mjs",
+    "test": "node scripts/selftest.mjs && node scripts/verify-export.mjs",
+    "ci": "node scripts/selftest.mjs && node scripts/verify-export.mjs && vite build"
   },
   "dependencies": {
     "jszip": "^3.10.1",
