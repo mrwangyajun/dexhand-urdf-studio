@@ -4,11 +4,15 @@ updates:
     directory: '/'
     schedule:
       interval: weekly
-    open-pull-requests-limit: 5
+    open-pull-requests-limit: 3
     commit-message:
       prefix: chore
+    # 大版本（react 19、vite 8、three 0.18x…）都会带动 API 变更，必须人工评估，
+    # 不让机器人自动开 PR；这类升级按 roadmap 单独排期。
+    ignore:
+      - dependency-name: '*'
+        update-types: ['version-update:semver-major']
     groups:
-      # three / react 这类大版本会带动 API 变更，单独成 PR 便于逐个验证
       dev-dependencies:
         dependency-type: development
         update-types: ['minor', 'patch']
@@ -20,3 +24,7 @@ updates:
     directory: '/'
     schedule:
       interval: monthly
+    open-pull-requests-limit: 2
+    ignore:
+      - dependency-name: '*'
+        update-types: ['version-update:semver-major']
