@@ -36,13 +36,9 @@ git push -u origin main
 | Settings → Code security | 打开 Dependabot alerts 与 secret scanning |
 | Issues → Labels | 保留默认标签；CI 里用到了 `bug` / `enhancement` / `needs-triage`（`needs-triage` 需手动新建） |
 
-## 4. 加 CI 徽章（推送后）
+## 4. CI 徽章
 
-CI 跑过第一次后，在 README 顶部第一行插入：
-
-```markdown
-[![CI](https://github.com/你的用户名/dexhand-urdf-studio/actions/workflows/ci.yml/badge.svg)](https://github.com/你的用户名/dexhand-urdf-studio/actions/workflows/ci.yml)
-```
+已在 README 顶部第一行，指向 `.github/workflows/ci.yml`（`?branch=main` 只显示主分支状态）。换仓库或换分支时改这两处 URL 即可。
 
 ## 5. 可选：在线演示（GitHub Pages）
 

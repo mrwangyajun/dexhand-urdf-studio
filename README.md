@@ -6,19 +6,7 @@
 
 给灵巧手结构工程师用的纯前端工具：不装 SolidWorks 插件、不读 `.sldprt`、不依赖本地大模型。
 
-![License: MIT](https://img.shields.io/badge/license-MIT-4c9aff.svg)
-
-![Node](https://img.shields.io/badge/node-%E2%89%A518-3c873a.svg)
-
-![Dependencies](https://img.shields.io/badge/runtime%20deps-4-6e7681.svg)
-
-![Tests](https://img.shields.io/badge/selftest-82%20passed-3fb950.svg)
-
-![E2E](https://img.shields.io/badge/e2e-49%20passed-3fb950.svg)
-
-
-
-![PRs Welcome](https://img.shields.io/badge/PRs-welcome-ffb454.svg)
+[![CI](https://github.com/mrwangyajun/dexhand-urdf-studio/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/mrwangyajun/dexhand-urdf-studio/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/license-MIT-4c9aff.svg)](./LICENSE) [![Node](https://img.shields.io/badge/node-%E2%89%A518-3c873a.svg)](https://nodejs.org) [![Dependencies](https://img.shields.io/badge/runtime%20deps-4-6e7681.svg)](./package.json) [![Tests](https://img.shields.io/badge/selftest-82%20passed-3fb950.svg)](./scripts/selftest.mjs) [![E2E](https://img.shields.io/badge/e2e-49%20passed-3fb950.svg)](./scripts/e2e.mjs) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-ffb454.svg)](./CONTRIBUTING.md)
 
 </div>
 
