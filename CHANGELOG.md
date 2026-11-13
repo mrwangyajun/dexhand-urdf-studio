@@ -38,5 +38,5 @@
 - `layout-check` 在 1280~1920 五档宽度下检查横向溢出与元素越界。
 - `examples/*.zip` 提供三套示例的导出成品，可直接解压校验。
 
-[Unreleased]: https://github.com/your-name/dexhand-urdf-studio/compare/v0.1.0...HEAD
-[0.1.0]: https://github.com/your-name/dexhand-urdf-studio/releases/tag/v0.1.0
+[Unreleased]: https://github.com/mrwangyajun/dexhand-urdf-studio/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/mrwangyajun/dexhand-urdf-studio/releases/tag/v0.1.0

@@ -1,20 +1,18 @@
 # 发布到 GitHub 的清单
 
-这个仓库已经按开源项目结构整理好，只剩「填自己的名字」和「推上去」两步。
+这个仓库已经按开源项目结构整理好。账号信息已按 `mrwangyajun` 填好，推上去即可；换账号时按下面第 1 节整包替换。
 
-## 1. 替换占位符
+## 1. 账号信息
 
-全文只有一处占位：`your-name`（GitHub 用户名或组织名）。替换后再提交：
+已填写的位置：`package.json` 的 `repository` / `bugs` / `homepage`、README 的 clone 地址、CHANGELOG 的版本对比链接、issue 模板的 Discussions 与安全公告地址。换账号时整包替换：
 
 ```bash
-# macOS / Linux
-grep -rl "your-name" . --exclude-dir=node_modules --exclude-dir=.git | xargs sed -i '' 's/your-name/你的用户名/g'
+# macOS
+grep -rl "mrwangyajun" . --exclude-dir=node_modules --exclude-dir=.git | xargs sed -i '' 's/mrwangyajun/新用户名/g'
 
-# Windows (Git Bash)
-grep -rl "your-name" . --exclude-dir=node_modules --exclude-dir=.git | xargs sed -i 's/your-name/你的用户名/g'
+# Windows (Git Bash) / Linux
+grep -rl "mrwangyajun" . --exclude-dir=node_modules --exclude-dir=.git | xargs sed -i 's/mrwangyajun/新用户名/g'
 ```
-
-涉及文件：`package.json`、`README.md`、`CHANGELOG.md`、`.github/ISSUE_TEMPLATE/config.yml`。
 
 同时按需修改 `LICENSE` 里的 `Copyright (c) 2026 dexhand-urdf-studio contributors`（保留集体署名也可以）。
 

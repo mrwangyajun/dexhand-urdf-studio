@@ -19,12 +19,12 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/your-name/dexhand-urdf-studio.git"
+    "url": "git+https://github.com/mrwangyajun/dexhand-urdf-studio.git"
   },
   "bugs": {
-    "url": "https://github.com/your-name/dexhand-urdf-studio/issues"
+    "url": "https://github.com/mrwangyajun/dexhand-urdf-studio/issues"
   },
-  "homepage": "https://github.com/your-name/dexhand-urdf-studio#readme",
+  "homepage": "https://github.com/mrwangyajun/dexhand-urdf-studio#readme",
   "engines": {
     "node": ">=18"
   },

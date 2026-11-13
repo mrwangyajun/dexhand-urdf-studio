@@ -6,27 +6,34 @@
 
 给灵巧手结构工程师用的纯前端工具：不装 SolidWorks 插件、不读 `.sldprt`、不依赖本地大模型。
 
-[![License: MIT](https://img.shields.io/badge/license-MIT-4c9aff.svg)](./LICENSE)
-[![Node](https://img.shields.io/badge/node-%E2%89%A518-3c873a.svg)](https://nodejs.org)
-[![Dependencies](https://img.shields.io/badge/runtime%20deps-4-6e7681.svg)](./package.json)
-[![Tests](https://img.shields.io/badge/selftest-82%20passed-3fb950.svg)](./scripts/selftest.mjs)
-[![E2E](https://img.shields.io/badge/e2e-49%20passed-3fb950.svg)](./scripts/e2e.mjs)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-ffb454.svg)](./CONTRIBUTING.md)
+![License: MIT](https://img.shields.io/badge/license-MIT-4c9aff.svg)
+
+![Node](https://img.shields.io/badge/node-%E2%89%A518-3c873a.svg)
+
+![Dependencies](https://img.shields.io/badge/runtime%20deps-4-6e7681.svg)
+
+![Tests](https://img.shields.io/badge/selftest-82%20passed-3fb950.svg)
+
+![E2E](https://img.shields.io/badge/e2e-49%20passed-3fb950.svg)
+
+
+
+![PRs Welcome](https://img.shields.io/badge/PRs-welcome-ffb454.svg)
 
 </div>
 
 ![界面预览](docs/screenshot.png)
 
-| 上手 | 深入 |
-| --- | --- |
-| [1. 这是什么](#1-这是什么) | [9. 导出包与验证](#9-导出包与验证) |
-| [2. 快速开始](#2-快速开始) | [10. 示例数据包](#10-示例数据包) |
-| [3. 演示步骤与验收](#3-演示步骤与验收) | [11. 已知限制](#11-已知限制) |
-| [4. 界面与交互](#4-界面与交互) | [12. 路线图](#12-路线图) |
-| [5. 功能清单](#5-功能清单) | [13. 目录结构](#13-目录结构) |
-| [6. 数据模型](#6-数据模型) | [14. 参与贡献](#14-参与贡献) |
-| [7. 从 SolidWorks 导出什么](#7-从-solidworks-应该导出什么) | [15. 许可证](#15-许可证) |
-| [8. 质量属性识别](#8-质量属性识别) | |
+| 上手                                             | 深入                     |
+| ---------------------------------------------- | ---------------------- |
+| [1. 这是什么](#1-这是什么)                             | [9. 导出包与验证](#9-导出包与验证) |
+| [2. 快速开始](#2-快速开始)                             | [10. 示例数据包](#10-示例数据包) |
+| [3. 演示步骤与验收](#3-演示步骤与验收)                       | [11. 已知限制](#11-已知限制)   |
+| [4. 界面与交互](#4-界面与交互)                           | [12. 路线图](#12-路线图)     |
+| [5. 功能清单](#5-功能清单)                             | [13. 目录结构](#13-目录结构)   |
+| [6. 数据模型](#6-数据模型)                             | [14. 参与贡献](#14-参与贡献)   |
+| [7. 从 SolidWorks 导出什么](#7-从-solidworks-应该导出什么) | [15. 许可证](#15-许可证)     |
+| [8. 质量属性识别](#8-质量属性识别)                         |                        |
 
 ---
 
@@ -50,12 +57,12 @@ CAD 里给每个 link 建好坐标系、导出 STL 与质量属性
 
 **设计上的四个取舍**
 
-| 取舍 | 原因 |
-| --- | --- |
-| 纯静态前端，无后端无账号 | 工程数据是客户的，不该离开本机；也不需要运维 |
+| 取舍                           | 原因                                        |
+| ---------------------------- | ----------------------------------------- |
+| 纯静态前端，无后端无账号                 | 工程数据是客户的，不该离开本机；也不需要运维                    |
 | 不读 `.sldprt`，只吃 STL + 质量属性文本 | 逆向 CAD 格式既不可靠也踩许可证；SolidWorks 自己导出的数值才是权威 |
-| 存储与导出永远是 SI | 只在输入控件边界换算，`1.86e-4 kg·m²` 这类值不会在链路里被整数化 |
-| 所有数值可追溯 | 面板始终显示「来源文件 / 原始单位 / 参考系 / 换算结果」，改错了能看出来 |
+| 存储与导出永远是 SI                  | 只在输入控件边界换算，`1.86e-4 kg·m²` 这类值不会在链路里被整数化  |
+| 所有数值可追溯                      | 面板始终显示「来源文件 / 原始单位 / 参考系 / 换算结果」，改错了能看出来  |
 
 ### 它不做什么
 
@@ -66,7 +73,7 @@ CAD 里给每个 link 建好坐标系、导出 STL 与质量属性
 ## 2. 快速开始
 
 ```bash
-git clone https://github.com/your-name/dexhand-urdf-studio.git
+git clone https://github.com/mrwangyajun/dexhand-urdf-studio.git
 cd dexhand-urdf-studio
 npm ci                 # 运行时只有 react / react-dom / three / jszip
 npm run dev            # http://localhost:5173
@@ -78,19 +85,19 @@ npm run dev            # http://localhost:5173
 
 ### 命令
 
-| 命令 | 作用 |
-| --- | --- |
-| `npm run dev` | 开发服务器（5173） |
-| `npm run build` | 产出 `dist/` 静态站点（`base: './'`，可放任意子目录） |
-| `npm run preview` | 预览构建产物（4173） |
-| `npm test` | `selftest` + `verify`，提交前最小自检 |
-| `npm run ci` | 上面两条 + `build`，与 GitHub Actions 一致 |
-| `npm run selftest` | 纯 Node 的核心逻辑断言：解析 / 惯量 / URDF / 校验 / 打包 / 示例，**82 项** |
-| `npm run verify` | 生成 zip → 解压 → 用 `tools/check_urdf.py` 实测（含坏包反例） |
-| `npm run e2e` | 无头 Chromium 跑真实交互，**49 项**断言，截图落在 `shots/`（需先 `npm run dev`） |
-| `npm run layout` | 1920/1680/1440/1366/1280 五档宽度检查横向溢出与越界 |
-| `npm run samples` | 重新生成示例网格、质量属性文本与示例工程（仓库已带，一般不用跑） |
-| `npm run examples` | 把三套示例导出成 `examples/*.zip` |
+| 命令                 | 作用                                                           |
+| ------------------ | ------------------------------------------------------------ |
+| `npm run dev`      | 开发服务器（5173）                                                  |
+| `npm run build`    | 产出 `dist/` 静态站点（`base: './'`，可放任意子目录）                        |
+| `npm run preview`  | 预览构建产物（4173）                                                 |
+| `npm test`         | `selftest` + `verify`，提交前最小自检                                |
+| `npm run ci`       | 上面两条 + `build`，与 GitHub Actions 一致                           |
+| `npm run selftest` | 纯 Node 的核心逻辑断言：解析 / 惯量 / URDF / 校验 / 打包 / 示例，**82 项**        |
+| `npm run verify`   | 生成 zip → 解压 → 用 `tools/check_urdf.py` 实测（含坏包反例）              |
+| `npm run e2e`      | 无头 Chromium 跑真实交互，**49 项**断言，截图落在 `shots/`（需先 `npm run dev`） |
+| `npm run layout`   | 1920/1680/1440/1366/1280 五档宽度检查横向溢出与越界                       |
+| `npm run samples`  | 重新生成示例网格、质量属性文本与示例工程（仓库已带，一般不用跑）                             |
+| `npm run examples` | 把三套示例导出成 `examples/*.zip`                                    |
 
 `npm run e2e` / `npm run layout` / `npm run shots` 会自动探测本机 Chrome、Edge 或 Chromium；也可用 `E2E_BROWSER=/path/to/chrome` 指定，被测地址用 `E2E_URL` 覆盖。
 
@@ -103,7 +110,6 @@ npm run dev            # http://localhost:5173
    - **三指灵巧手**：3 指 × 3 关节（10 links / 9 joints）
    - **Barrett Hand BH8-280**：9 links / 8 joints，运动学与惯性参数取自公开的 `barrett_model`
    - **单指示例**：4 links / 3 joints，用于对照验收
-
    载入后右上显示 *校验通过*，3D 里能看到坐标系、关节轴（青色箭头）、质心小球（品红）。
 3. 点左侧 `f1_proximal`：右侧面板显示网格、质量来源（`f1_proximal.txt`、原始单位 g / mm / g·mm²）、换算后的 kg / m / kg·m²。
 4. 点零件行的 **⚖** 图标打开「识别质量属性」：把 `samples/massprops/palm.txt` 内容粘进去 → 自动识别为 0.2754 kg、质心 (0.025, 0, 0)、惯量 1.86e-4 kg·m² → 选绑定 link → **应用**。
@@ -145,18 +151,18 @@ check_urdf robot.urdf                # 有 ROS/urdfdom 时用官方工具
 
 ## 5. 功能清单
 
-| 模块 | 已实现 |
-| --- | --- |
-| 零件入库 | 多文件拖拽上传 STL/OBJ/DAE；每个 link 独立颜色；网格单位换算（m/mm/cm/in）；空零件占位 |
-| 参数编辑 | mass、质心 xyz、惯量 6 分量；单位下拉（kg/g、m/mm、kg·m²/kg·mm²/g·mm²）；惯量参考系切换（质心 / 输出坐标系） |
-| 质量属性识别 | SolidWorks 质量属性 TXT / CSV / 复制文本（中英文标签）、多文件批量绑定、来源与换算可追溯、缺项高亮、手填兜底 |
-| 拼装 | 建关节（parent/child/type/origin/axis/limit）、改父子、改名、删除、root 切换、成环检测 |
-| 3D | Three.js 视口、OrbitControls、link 坐标轴、关节轴箭头、质心球、选中高亮 + 包围盒、关节拖动滑块、适应视图、四档视角预设 |
-| 示例库 | 三套工程（单指 / 三指对称 / Barrett BH8-280）一键载入，卡片显示拓扑缩略图、连杆数、关节数、总质量与参数来源 |
-| 预览 | 实时 URDF 文本（等宽、可下载）；关节限位按类型输出 |
-| 校验 | 20+ 条规则（错误阻断导出 / 警告 / 提示），条目可点击定位到对象 |
-| 工程 | 保存/打开 JSON（网格以 base64 内嵌，可单文件搬走）；localStorage 自动保存；`Ctrl+S` 保存 |
-| 导出 | `robot.urdf` + `meshes/` + `params.json` + `check_urdf.py` + `README.md` |
+| 模块     | 已实现                                                                        |
+| ------ | -------------------------------------------------------------------------- |
+| 零件入库   | 多文件拖拽上传 STL/OBJ/DAE；每个 link 独立颜色；网格单位换算（m/mm/cm/in）；空零件占位                  |
+| 参数编辑   | mass、质心 xyz、惯量 6 分量；单位下拉（kg/g、m/mm、kg·m²/kg·mm²/g·mm²）；惯量参考系切换（质心 / 输出坐标系） |
+| 质量属性识别 | SolidWorks 质量属性 TXT / CSV / 复制文本（中英文标签）、多文件批量绑定、来源与换算可追溯、缺项高亮、手填兜底         |
+| 拼装     | 建关节（parent/child/type/origin/axis/limit）、改父子、改名、删除、root 切换、成环检测            |
+| 3D     | Three.js 视口、OrbitControls、link 坐标轴、关节轴箭头、质心球、选中高亮 + 包围盒、关节拖动滑块、适应视图、四档视角预设 |
+| 示例库    | 三套工程（单指 / 三指对称 / Barrett BH8-280）一键载入，卡片显示拓扑缩略图、连杆数、关节数、总质量与参数来源           |
+| 预览     | 实时 URDF 文本（等宽、可下载）；关节限位按类型输出                                               |
+| 校验     | 20+ 条规则（错误阻断导出 / 警告 / 提示），条目可点击定位到对象                                       |
+| 工程     | 保存/打开 JSON（网格以 base64 内嵌，可单文件搬走）；localStorage 自动保存；`Ctrl+S` 保存             |
+| 导出     | `robot.urdf` + `meshes/` + `params.json` + `check_urdf.py` + `README.md`   |
 
 ---
 
@@ -164,26 +170,26 @@ check_urdf robot.urdf                # 有 ROS/urdfdom 时用官方工具
 
 ### link（零件）
 
-| 字段 | 含义 | 单位 | 落到 URDF |
-| --- | --- | --- | --- |
-| `name` | 名称（导出时清洗为 `[A-Za-z0-9_]`） | — | `<link name>` |
-| `mesh` | `{fileName, dataBase64, size, unitScale, format}` | — | `<visual><geometry><mesh filename scale>` |
-| `mass` | 质量 | kg | `<mass value>` |
-| `com` | 质心 xyz（相对 link 原点） | m | `<inertial><origin xyz>` |
-| `inertia` | ixx ixy ixz iyy iyz izz（相对所选参考系） | kg·m² | `<inertia>`（导出前统一换算到质心） |
-| `inertiaFrame` | `com` / `output` | — | 决定是否做平行轴换算 |
-| `placeholder` | 是否占位值 | — | 导出时给警告 |
+| 字段             | 含义                                                | 单位    | 落到 URDF                                   |
+| -------------- | ------------------------------------------------- | ----- | ----------------------------------------- |
+| `name`         | 名称（导出时清洗为 `[A-Za-z0-9_]`）                         | —     | `<link name>`                             |
+| `mesh`         | `{fileName, dataBase64, size, unitScale, format}` | —     | `<visual><geometry><mesh filename scale>` |
+| `mass`         | 质量                                                | kg    | `<mass value>`                            |
+| `com`          | 质心 xyz（相对 link 原点）                                | m     | `<inertial><origin xyz>`                  |
+| `inertia`      | ixx ixy ixz iyy iyz izz（相对所选参考系）                  | kg·m² | `<inertia>`（导出前统一换算到质心）                   |
+| `inertiaFrame` | `com` / `output`                                  | —     | 决定是否做平行轴换算                                |
+| `placeholder`  | 是否占位值                                             | —     | 导出时给警告                                    |
 
 ### joint（关节）
 
-| 字段 | 含义 | 单位 | 落到 URDF |
-| --- | --- | --- | --- |
-| `name` | 名称 | — | `<joint name>` |
-| `type` | `revolute` / `prismatic` / `continuous` / `fixed` | — | `type` |
-| `parentId` / `childId` | 连接的两个 link | — | `<parent link>` / `<child link>` |
-| `origin.xyz` / `origin.rpy` | child 坐标系在 parent 中的位姿 | m / rad | `<origin xyz rpy>` |
-| `axis` | 转轴（在 child 坐标系） | — | `<axis xyz>`（fixed 不输出） |
-| `limit` | lower/upper/effort/velocity | rad(m) / N·m / rad·s⁻¹ | `<limit>`（continuous 只输出 effort/velocity） |
+| 字段                          | 含义                                                | 单位                     | 落到 URDF                                   |
+| --------------------------- | ------------------------------------------------- | ---------------------- | ----------------------------------------- |
+| `name`                      | 名称                                                | —                      | `<joint name>`                            |
+| `type`                      | `revolute` / `prismatic` / `continuous` / `fixed` | —                      | `type`                                    |
+| `parentId` / `childId`      | 连接的两个 link                                        | —                      | `<parent link>` / `<child link>`          |
+| `origin.xyz` / `origin.rpy` | child 坐标系在 parent 中的位姿                            | m / rad                | `<origin xyz rpy>`                        |
+| `axis`                      | 转轴（在 child 坐标系）                                   | —                      | `<axis xyz>`（fixed 不输出）                   |
+| `limit`                     | lower/upper/effort/velocity                       | rad(m) / N·m / rad·s⁻¹ | `<limit>`（continuous 只输出 effort/velocity） |
 
 `rpy` 采用 URDF 的固定轴 X-Y-Z 外旋（`R = Rz·Ry·Rx`）；面板里可按 **度** 输入。
 
@@ -230,13 +236,13 @@ f1_proximal,0.011664,0.015,0,0,0.000000629856,0,0,0.000001189728,0,0.00000118972
 
 识别内容与换算：
 
-| 项目 | 说明 |
-| --- | --- |
-| 质量 | 识别 `g / kg / mg / lb / oz / 克 / 千克…`，统一换成 kg |
-| 体积/密度/表面积 | 仅作参考信息，不参与导出 |
-| 质心 | 识别 `Center of mass / 重心 / 质心` 下的 X/Y/Z 与长度单位（mm/cm/m/in），换成 m |
-| 惯量 | 优先取 **相对质心** 的 `Lxx…Lzz`（`Lzx` 自动映射到 `ixz`）；只有「输出坐标系」时标记 `output` 并在导出时用平行轴定理换算；只有主惯性矩时按对角处理并告警 |
-| 单位 | 从 `( grams * square millimeters )` 这类表头识别，`g·mm² → kg·m²` 系数 1e-9 |
+| 项目        | 说明                                                                                              |
+| --------- | ----------------------------------------------------------------------------------------------- |
+| 质量        | 识别 `g / kg / mg / lb / oz / 克 / 千克…`，统一换成 kg                                                    |
+| 体积/密度/表面积 | 仅作参考信息，不参与导出                                                                                    |
+| 质心        | 识别 `Center of mass / 重心 / 质心` 下的 X/Y/Z 与长度单位（mm/cm/m/in），换成 m                                   |
+| 惯量        | 优先取 **相对质心** 的 `Lxx…Lzz`（`Lzx` 自动映射到 `ixz`）；只有「输出坐标系」时标记 `output` 并在导出时用平行轴定理换算；只有主惯性矩时按对角处理并告警 |
+| 单位        | 从 `( grams * square millimeters )` 这类表头识别，`g·mm² → kg·m²` 系数 1e-9                               |
 
 界面会显示：**来源文件、原始单位、坐标系假设、换算结果、告警**，并允许逐项改。
 
@@ -260,15 +266,17 @@ dex_hand_demo_urdf.zip
 └── README.md           # 单位、软件版本、ROS2/MuJoCo/Isaac 加载方法
 ```
 
-- 网格文件按 `link 名 + 原扩展名` 重命名，避免重名；**字节不变**，缩放靠 `<mesh scale>`。
+- 网格文件按 `link 名 + 原扩展名` 重命名，避免重名；**字节不变**，缩放靠 `<mesh scale>`。  
+  |  |  |  |  
+  | --- | --- | --- |
 - 惯量若来自「输出坐标系」，导出时按 `I_C = I_O − m(|d|²E − ddᵀ)` 换算到质心。
 - 校验规则（错误会**阻止导出**）：
 
-| 级别 | 规则 |
-| --- | --- |
+| 级别 | 规则                                                                                                                                                                                            |
+| -- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 错误 | 无 link / 无 root / 多个 root / 成环 / 一个 link 多个父关节 / 悬空 link / 重名 / joint 与 link 重名 / 缺质量 / 惯量全 0 / 惯量非正定 / 缺 axis / revolute·prismatic 缺 limit 或 lower≥upper / effort·velocity ≤0 / parent=child |
-| 警告 | 占位值 / 质量或惯量数量级可疑（单位疑似未换算）/ 质心离原点过远 / 惯量不满足三角不等式 / 无网格 / 名字含特殊字符 / prismatic 行程过大 |
-| 提示 | mm 网格缩放说明 / fixed 关节 axis 被忽略 |
+| 警告 | 占位值 / 质量或惯量数量级可疑（单位疑似未换算）/ 质心离原点过远 / 惯量不满足三角不等式 / 无网格 / 名字含特殊字符 / prismatic 行程过大                                                                                                              |
+| 提示 | mm 网格缩放说明 / fixed 关节 axis 被忽略                                                                                                                                                                 |
 
 实测（`npm run verify`）：
 
@@ -289,18 +297,19 @@ ROS 2 / MuJoCo / Isaac 的加载命令见导出包里的 `README.md`（`check_ur
 
 ## 10. 示例数据包
 
-页面顶栏「载入示例」打开示例库，三套工程都由 `scripts/gen-samples.mjs` 生成，
+页面顶栏「载入示例」打开示例库，三套工程都由 `scripts/gen-samples.mjs` 生成，  
 索引在 `public/samples/index.json`（含连杆数、关节数、总质量、来源）。
 
 ### 10.1 Barrett Hand BH8-280（三指，真实参数）
 
-| 项目 | 来源 / 数值 |
-| --- | --- |
-| 运动学 | `jhu-lcsr/barrett_model` 的 `models/hand.urdf.xacro`（源自 Barrett 官方 SolidWorks 模型） |
-| 拓扑 | palm + f1/f2（各 prox→med→dist）+ f3（med→dist），共 9 links / 8 joints |
-| 关节限位 | prox 0…180°、med 0…140°、dist 0…48°；effort 5 N·m、velocity 5 rad/s |
-| 质量 | palm 0.50573 / prox 0.14109 / med 0.062139 / dist 0.041377 kg（合计 1.0985 kg） |
-| 质心与惯量 | 与上游 URDF 逐位一致（含非对角项，如 palm 的 `ixz = -4.2034e-05`） |
+| 项目    | 来源 / 数值                                                                          |
+| ----- | -------------------------------------------------------------------------------- |
+| 运动学   | `jhu-lcsr/barrett_model` 的 `models/hand.urdf.xacro`（源自 Barrett 官方 SolidWorks 模型） |
+| 拓扑    | palm + f1/f2（各 prox→med→dist）+ f3（med→dist），共 9 links / 8 joints                 |
+| 关节限位  | prox 0…180°、med 0…140°、dist 0…48°；effort 5 N·m、velocity 5 rad/s                  |
+| 质量    | palm 0.50573 / prox 0.14109 / med 0.062139 / dist 0.041377 kg（合计 1.0985 kg）      |
+| 质心与惯量 | 与上游 URDF 逐位一致（含非对角项，如 palm 的 `ixz = -4.2034e-05`）                                |
+
 
 **网格是等比简化几何，不是上游 STL**：上游仓库未声明许可证，因此这里按各连杆包围盒
 （palm 89×110×90、prox 65 mm、med 78 mm、dist 46 mm）重新生成八棱柱/圆柱近似件，
